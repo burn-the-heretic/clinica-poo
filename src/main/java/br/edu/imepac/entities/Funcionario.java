@@ -1,12 +1,13 @@
 package br.edu.imepac.entities;
 
+import javax.management.relation.Role;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
 
-public class Paciente {
+public class Funcionario {
     private Integer id;
-    private String nome;
+    private String usuario;
+    private Integer senha;
     private Integer idade;
     private char sexo;
     private String cpf;
@@ -19,18 +20,22 @@ public class Paciente {
     private String contato;
     private String email;
     private LocalDateTime dataNascimento;
-    //um paciente pode ter 0 ou mais consultas e uma consulta pode ter apenas um usuario
-    private List<Consulta> consulta;
 
-    public Paciente() {
+    //1 funcionario pode ter uma especialidade e 1 especialidade pode ter 0 ou mais funcionarios
+    private Especialidade especialidade;
+    //cargo do funcionario
+    private Role role;
+
+    public Funcionario() {
     }
 
-    public Paciente(Integer id, String nome, Integer idade, char sexo,
-                    String cpf, String rua, String numero, String complemento,
-                    String bairro, String cidade, String estado, String contato,
-                    String email, LocalDateTime dataNascimento) {
+    public Funcionario(Integer id, String usuario, Integer senha, Integer idade,
+                       char sexo, String cpf, String rua, String numero, String complemento,
+                       String bairro, String cidade, String estado, String contato, String email,
+                       LocalDateTime dataNascimento, Especialidade especialidade, Role role) {
         this.id = id;
-        this.nome = nome;
+        this.usuario = usuario;
+        this.senha = senha;
         this.idade = idade;
         this.sexo = sexo;
         this.cpf = cpf;
@@ -43,6 +48,8 @@ public class Paciente {
         this.contato = contato;
         this.email = email;
         this.dataNascimento = dataNascimento;
+        this.especialidade = especialidade;
+        this.role = role;
     }
 
     public Integer getId() {
@@ -53,12 +60,20 @@ public class Paciente {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getUsuario() {
+        return usuario;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public Integer getSenha() {
+        return senha;
+    }
+
+    public void setSenha(Integer senha) {
+        this.senha = senha;
     }
 
     public Integer getIdade() {
@@ -157,16 +172,28 @@ public class Paciente {
         this.dataNascimento = dataNascimento;
     }
 
-    public List<Consulta> getConsulta() {
-        return consulta;
+    public Especialidade getEspecialidade() {
+        return especialidade;
+    }
+
+    public void setEspecialidade(Especialidade especialidade) {
+        this.especialidade = especialidade;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Paciente paciente = (Paciente) o;
-        return id.equals(paciente.id);
+        Funcionario that = (Funcionario) o;
+        return id.equals(that.id);
     }
 
     @Override
