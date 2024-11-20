@@ -21,6 +21,9 @@ public class Funcionario {
     private String email;
     private LocalDateTime dataNascimento;
 
+    //1 funcionario tem apenas um perfil e um perfil tem 0 ou mais usuarios
+    private Perfil perfil;
+
     //1 funcionario pode ter uma especialidade e 1 especialidade pode ter 0 ou mais funcionarios
     private Especialidade especialidade;
     //cargo do funcionario
@@ -32,7 +35,7 @@ public class Funcionario {
     public Funcionario(Integer id, String usuario, Integer senha, Integer idade,
                        char sexo, String cpf, String rua, String numero, String complemento,
                        String bairro, String cidade, String estado, String contato, String email,
-                       LocalDateTime dataNascimento, Especialidade especialidade, Role role) {
+                       LocalDateTime dataNascimento, Especialidade especialidade, Role role , Perfil perfil) {
         this.id = id;
         this.usuario = usuario;
         this.senha = senha;
@@ -50,6 +53,7 @@ public class Funcionario {
         this.dataNascimento = dataNascimento;
         this.especialidade = especialidade;
         this.role = role;
+        this.perfil = perfil;
     }
 
     public Integer getId() {
@@ -186,6 +190,14 @@ public class Funcionario {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public Perfil getPerfil() {
+        return perfil;
+    }
+
+    public void setPerfil(Perfil perfil) {
+        this.perfil = perfil;
     }
 
     @Override
