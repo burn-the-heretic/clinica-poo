@@ -1,6 +1,6 @@
 package br.edu.imepac.enums;
 
-public enum Roles {
+public enum Cargo {
     ADMIN,
     ATENDENTE,
     MEDICO,

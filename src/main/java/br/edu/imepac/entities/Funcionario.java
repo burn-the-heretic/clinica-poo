@@ -1,5 +1,7 @@
 package br.edu.imepac.entities;
 
+import br.edu.imepac.enums.Cargo;
+
 import javax.management.relation.Role;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -27,7 +29,7 @@ public class Funcionario {
     //1 funcionario pode ter uma especialidade e 1 especialidade pode ter 0 ou mais funcionarios
     private Especialidade especialidade;
     //cargo do funcionario
-    private Role role;
+    private Cargo role;
 
     public Funcionario() {
     }
@@ -35,7 +37,7 @@ public class Funcionario {
     public Funcionario(Integer id, String usuario, Integer senha, Integer idade,
                        char sexo, String cpf, String rua, String numero, String complemento,
                        String bairro, String cidade, String estado, String contato, String email,
-                       LocalDateTime dataNascimento, Especialidade especialidade, Role role , Perfil perfil) {
+                       LocalDateTime dataNascimento, Especialidade especialidade, Cargo role , Perfil perfil) {
         this.id = id;
         this.usuario = usuario;
         this.senha = senha;
@@ -184,11 +186,11 @@ public class Funcionario {
         this.especialidade = especialidade;
     }
 
-    public Role getRole() {
+    public Cargo getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(Cargo role) {
         this.role = role;
     }
 
