@@ -1,7 +1,6 @@
-package br.edu.imepac.dao;
+package br.edu.imepac.dao.Impl;
 
 import br.edu.imepac.entities.Funcionario;
-import br.edu.imepac.enums.Cargo;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,7 +12,7 @@ import java.util.List;
 ]
 */
 
-public class AdminDAO {
+public class AdminDAOImpl {
 
     private String insertNewFuncionario = "insert into p.tb_funcionario (usuario ,  email ,senha , idade, sexo , cpf , rua ,numero , complemento , bairro ,cidade , estado , contato ,cargo ,data_nascimento) values (? , ? ,? , ? , ?, ? , ? , ?, ? , ? , ?, ? , ? , ?, ?);";
     private PreparedStatement preparedStatementInsert;
@@ -24,7 +23,7 @@ public class AdminDAO {
     private String listAllfuncionarios = "select *from p.tb_funcionario";
     private PreparedStatement preparedStatementListAll;
 
-    public AdminDAO (final Connection connection) throws SQLException {
+    public AdminDAOImpl(final Connection connection) throws SQLException {
         preparedStatementInsert = connection.prepareStatement(insertNewFuncionario);
         preparedStatementGetFuncionario = connection.prepareStatement(getFuncionarioById);
         preparedStatementDeleteFuncionario = connection.prepareStatement(deleteFuncionarioById);
