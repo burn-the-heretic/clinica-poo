@@ -1,15 +1,21 @@
 package br.edu.imepac.dao;
 
 import br.edu.imepac.entities.Funcionario;
+import br.edu.imepac.enums.Cargo;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+[
+  fazer query de update funcionario
+]
+*/
+
 public class AdminDAO {
 
-    private String insertNewFuncionario = "insert into p.tb_funcionario (usuario ,  email ,senha , idade, sexo , cpf , rua ,numero , complemento , bairro ,cidade , estado , contato ,data_nascimento) values (? , ? ,? , ? , ?, ? , ? , ?, ? , ? , ?, ? , ? , ?);";
+    private String insertNewFuncionario = "insert into p.tb_funcionario (usuario ,  email ,senha , idade, sexo , cpf , rua ,numero , complemento , bairro ,cidade , estado , contato ,cargo ,data_nascimento) values (? , ? ,? , ? , ?, ? , ? , ?, ? , ? , ?, ? , ? , ?, ?);";
     private PreparedStatement preparedStatementInsert;
     private String getFuncionarioById = "select from p.tb_funcionario where id=?";
     private PreparedStatement preparedStatementGetFuncionario;
@@ -41,7 +47,8 @@ public class AdminDAO {
         preparedStatementInsert.setString(11, funcionario.getCidade());
         preparedStatementInsert.setString(12, funcionario.getEstado());
         preparedStatementInsert.setString(13, funcionario.getContato());
-        preparedStatementInsert.setTimestamp(14 , Timestamp.valueOf(funcionario.getDataNascimento()));
+        preparedStatementInsert.setString(14 , String.valueOf(funcionario.getRole()));
+        preparedStatementInsert.setTimestamp(15 , Timestamp.valueOf(funcionario.getDataNascimento()));
         return preparedStatementInsert.executeUpdate();
     }
 
