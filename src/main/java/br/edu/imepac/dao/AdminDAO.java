@@ -2,18 +2,18 @@ package br.edu.imepac.dao;
 
 import br.edu.imepac.entities.Funcionario;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdminDAO {
 
-    private String insertNewFuncionario = "insert into p.tb_funcionario (usuario , senha, senha , idade, sexo , cpf , rua ,numero , complemento , bairro ,cidade , estado , contato , email ,data_nascimento) values (? , ? , ? ,? , ? , ?, ? , ? , ?, ? , ? , ?, ? , ? , ?);";
+    private String insertNewFuncionario = "insert into p.tb_funcionario (usuario ,  email ,senha , idade, sexo , cpf , rua ,numero , complemento , bairro ,cidade , estado , contato ,data_nascimento) values (? , ? ,? , ? , ?, ? , ? , ?, ? , ? , ?, ? , ? , ?);";
     private PreparedStatement preparedStatementInsert;
     private String getFuncionarioById = "select from p.tb_funcionario where id=?";
     private PreparedStatement preparedStatementGetFuncionario;
-    private String deleteFuncionarioById = "";
+    private String deleteFuncionarioById = "delete from p.tb_funcionario where id=?";
     private PreparedStatement preparedStatementDeleteFuncionario;
     private String listAllfuncionarios = "select *from p.tb_funcionario";
     private PreparedStatement preparedStatementListAll;
@@ -26,19 +26,69 @@ public class AdminDAO {
     }
 
     //cadastrar o funcionario
-    public Funcionario cadastrarFuncionario(){
-        return null;
+    public int cadastrarFuncionario(Funcionario funcionario) throws SQLException {
+        preparedStatementInsert.clearParameters();
+        preparedStatementInsert.setString(1, funcionario.getUsuario());
+        preparedStatementInsert.setString(2 , funcionario.getEmail());
+        preparedStatementInsert.setInt(3 , funcionario.getSenha());
+        preparedStatementInsert.setInt(4, funcionario.getIdade());
+        preparedStatementInsert.setString(5, String.valueOf(funcionario.getSexo()));
+        preparedStatementInsert.setString(6, funcionario.getCpf());
+        preparedStatementInsert.setString(7, funcionario.getRua());
+        preparedStatementInsert.setString(8, funcionario.getNumero());
+        preparedStatementInsert.setString(9, funcionario.getComplemento());
+        preparedStatementInsert.setString(10, funcionario.getBairro());
+        preparedStatementInsert.setString(11, funcionario.getCidade());
+        preparedStatementInsert.setString(12, funcionario.getEstado());
+        preparedStatementInsert.setString(13, funcionario.getContato());
+        preparedStatementInsert.setTimestamp(14 , Timestamp.valueOf(funcionario.getDataNascimento()));
+        return preparedStatementInsert.executeUpdate();
     }
-    //pegar o funcionario pela id
-    public Funcionario getFuncionarioById(int id){
-        return  null;
-    }
-    //deleta o funcionario pelo id
-    public void deleteFuncionarioById(int id){
 
+    //pegar o funcionario pela id
+    public Funcionario getFuncionarioById(int id) throws SQLException {
+         preparedStatementGetFuncionario.clearParameters();
+         Funcionario funcionario = new Funcionario();
+         preparedStatementGetFuncionario.setInt(1, id);
+         ResultSet resultSet = preparedStatementGetFuncionario.executeQuery();
+         while (resultSet.next()) {
+             funcionario.setId(resultSet.getInt("id"));
+             funcionario.setUsuario(resultSet.getString("usuario"));
+             funcionario.setEmail(resultSet.getString("email"));
+             funcionario.setSenha(resultSet.getInt("senha"));
+             funcionario.setIdade(resultSet.getInt("idade"));
+             //add o resto dos atributos
+         }
+         return funcionario;
     }
+
+    //deleta o funcionario pelo id
+    public int deleteFuncionarioById(int id) throws SQLException {
+        preparedStatementDeleteFuncionario.clearParameters();
+        preparedStatementDeleteFuncionario.setInt(1, id);
+        return preparedStatementDeleteFuncionario.executeUpdate();
+    }
+
     //listar todos os funcionarios
-    public List<Funcionario> listAllFuncionarios(){
-        return null;
+    public List<Funcionario> listAllFuncionarios() throws SQLException {
+        List<Funcionario> localList = new ArrayList<>();
+
+        ResultSet result = preparedStatementListAll.executeQuery();
+        while (result.next()) {
+            Funcionario funcionario = new Funcionario();
+            funcionario.setId(result.getInt("id"));
+            funcionario.setUsuario(result.getString("usuario"));
+            funcionario.setEmail(result.getString("email"));
+            funcionario.setSenha(result.getInt("senha"));
+            funcionario.setIdade(result.getInt("idade"));
+            funcionario.setBairro(result.getString("bairro"));
+            funcionario.setCidade(result.getString("cidade"));
+            funcionario.setEstado(result.getString("estado"));
+            funcionario.setContato(result.getString("contato"));
+            //add o resto dos atributos
+            localList.add(funcionario);
+        }
+        return localList;
     }
+    //fazer as queries das outras classes primeiro , já que o admin vai ter todas
 }
