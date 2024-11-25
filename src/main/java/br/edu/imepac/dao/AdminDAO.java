@@ -53,7 +53,7 @@ public class AdminDAO {
     }
 
     //pegar o funcionario pela id
-    public Funcionario getFuncionarioById(int id) throws SQLException {
+    public Funcionario getFuncionarioById(final int id) throws SQLException {
          preparedStatementGetFuncionario.clearParameters();
          Funcionario funcionario = new Funcionario();
          preparedStatementGetFuncionario.setInt(1, id);
@@ -70,7 +70,7 @@ public class AdminDAO {
     }
 
     //deleta o funcionario pelo id
-    public int deleteFuncionarioById(int id) throws SQLException {
+    public int deleteFuncionarioById(final int id) throws SQLException {
         preparedStatementDeleteFuncionario.clearParameters();
         preparedStatementDeleteFuncionario.setInt(1, id);
         return preparedStatementDeleteFuncionario.executeUpdate();
