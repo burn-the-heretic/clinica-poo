@@ -10,12 +10,14 @@ import java.util.List;
  IMPORTANTE:
   Uma consulta marcada como "ativa" não pode ser deletada sem permissão de um Administrador.
   O DELETE PACIENTE DEVE DELETAR INFORMAÇÕES DE PACIENTES
+  Campos obrigatórios incluem: nome, cpf, dataNascimento, contato.
+  FALTA CRIAR O MEDICO-DAO
 */
 
 public class AtendenteDAO {
 
     //CONSULTA
-    private String insertNewConsulta = "insert into p.tb_consulta(data_horario , sintomas , e_retorno , esta_ativa , paciente_id , prontuario_id ,convenio_id) values(? , ? , ? , ? , ? , ?)";
+    private String insertNewConsulta = "insert into p.tb_consulta(data_horario , sintomas , e_retorno , esta_ativa , paciente_id , prontuario_id ,convenio_id) values(? , ? , ? , ? , ? , ? , ?)";
     private PreparedStatement pstinsert;
 
     private String selectAllConsulta = "select * from p.tb_consulta";

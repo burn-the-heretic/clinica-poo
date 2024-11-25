@@ -69,7 +69,6 @@ public class Paciente {
         this.idade = idade;
     }
 
-
     public char getSexo() {
         return sexo;
     }
