@@ -1,0 +1,110 @@
+CREATE DATABASE clinicamedica;
+
+USE clinicamedica;
+
+CREATE TABLE Funcionario (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario VARCHAR(100) NOT NULL,
+    senha INT NOT NULL,
+    idade INT NOT NULL,
+    sexo CHAR(1) NOT NULL,
+    cpf VARCHAR(14) NOT NULL,
+    rua VARCHAR(255),
+    numero VARCHAR(50),
+    complemento VARCHAR(255),
+    bairro VARCHAR(100),
+    cidade VARCHAR(100),
+    estado VARCHAR(100),
+    contato VARCHAR(15),
+    email VARCHAR(255),
+    dataNascimento DATETIME NOT NULL,
+    tipo ENUM('ATENDENTE', 'MEDICO') NOT NULL -- Tipo de funcionário
+);
+
+
+CREATE TABLE Paciente (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    idade INT NOT NULL,
+    sexo CHAR(1) NOT NULL,
+    cpf VARCHAR(14) NOT NULL,
+    rua VARCHAR(255),
+    numero VARCHAR(50),
+    complemento VARCHAR(255),
+    bairro VARCHAR(100),
+    cidade VARCHAR(100),
+    estado VARCHAR(100),
+    contato VARCHAR(15),
+    email VARCHAR(255),
+    dataNascimento DATETIME NOT NULL
+);
+
+CREATE TABLE Consulta (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    dataHorario DATETIME NOT NULL,
+    sintomas TEXT,
+    eRetorno BOOLEAN NOT NULL,
+    estaAtiva BOOLEAN NOT NULL,
+    id_paciente INT NOT NULL,
+    id_funcionario INT NOT NULL, -- Médico ou atendente
+    id_prontuario INT NOT NULL, -- Prontuário associado
+    id_convenio INT NOT NULL, -- Convênio associado
+    FOREIGN KEY (id_paciente) REFERENCES Paciente(id),
+    FOREIGN KEY (id_funcionario) REFERENCES Funcionario(id),
+    FOREIGN KEY (id_prontuario) REFERENCES Prontuario(id),
+    FOREIGN KEY (id_convenio) REFERENCES Convenio(id)
+);
+
+CREATE TABLE Prontuario (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    receituario TEXT,
+    exames TEXT,
+    observacao TEXT
+);
+
+CREATE TABLE Convenio (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    descricao TEXT
+);
+
+CREATE TABLE Especialidade (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    descricao TEXT
+);
+
+CREATE TABLE Perfil (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    cadastrarFuncionario BOOLEAN,
+    lerFuncionario BOOLEAN,
+    atualizarFuncionario BOOLEAN,
+    deletarFuncionario BOOLEAN,
+    listarFuncionario BOOLEAN,
+    cadastrarPaciente BOOLEAN,
+    lerPaciente BOOLEAN,
+    atualizarPaciente BOOLEAN,
+    deletarPaciente BOOLEAN,
+    listarPaciente BOOLEAN,
+    cadastrarConsulta BOOLEAN,
+    lerConsulta BOOLEAN,
+    atualizarConsulta BOOLEAN,
+    deletarConsulta BOOLEAN,
+    listarConsulta BOOLEAN,
+    cadastrarEspecialidade BOOLEAN,
+    lerEspecialidade BOOLEAN,
+    atualizarEspecialidade BOOLEAN,
+    deletarEspecialidade BOOLEAN,
+    listarEspecialidade BOOLEAN,
+    cadastrarConvenio BOOLEAN,
+    lerConvenio BOOLEAN,
+    atualizarConvenio BOOLEAN,
+    deletarConvenio BOOLEAN,
+    listarConvenio BOOLEAN,
+    cadastrarProntuario BOOLEAN,
+    lerProntuario BOOLEAN,
+    atualizarProntuario BOOLEAN,
+    deletarProntuario BOOLEAN,
+    listarProntuario BOOLEAN
+);

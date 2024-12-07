@@ -1,8 +1,6 @@
 package br.edu.imepac.enums;
 
-public enum Cargo {
-    ADMIN,
+public enum Tipo {
     ATENDENTE,
     MEDICO,
-    PACIENTE
 }

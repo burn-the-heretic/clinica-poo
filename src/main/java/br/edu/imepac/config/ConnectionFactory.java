@@ -13,7 +13,7 @@ public class ConnectionFactory {
             final String senha
     ) throws SQLException {
       return DriverManager.getConnection(
-              "jdbc:mysql//"+enderecoIP+":"+enderecoPorta+"/"+nomeBanco,
+              "jdbc:mysql://"+enderecoIP+":"+enderecoPorta+"/"+nomeBanco,
               usuario,
               senha
       );

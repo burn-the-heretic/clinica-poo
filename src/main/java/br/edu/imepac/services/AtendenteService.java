@@ -13,4 +13,6 @@ public interface AtendenteService {
     ConsultaResponseDTO atualizarConsulta(CadastroConsultaDTO  consulta);
     void removerConsulta(int id) throws SQLException;
     List<ConsultaResponseDTO> listarConsultas() throws SQLException;
+
+
 }
