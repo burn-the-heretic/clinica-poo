@@ -1,5 +1,7 @@
 package br.edu.imepac.dao.Impl;
 
+import br.edu.imepac.config.ConnectionFactory;
+import br.edu.imepac.config.DbConfig;
 import br.edu.imepac.dao.AtendenteDAO;
 import br.edu.imepac.entities.*;
 
@@ -17,36 +19,45 @@ import java.util.List;
 
 public class AtendenteDAOImpl implements AtendenteDAO {
 
+    private void createConnection() {
+        try {
+            ConnectionFactory.getConnection(DbConfig.ip , DbConfig.porta,
+            DbConfig.nomeBanco, DbConfig.usuario,DbConfig.senha);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     //CONSULTA
-    private String insertNewConsulta = "insert into p.tb_consulta(data_horario , sintomas , e_retorno , esta_ativa , paciente_id , prontuario_id ,convenio_id) values(? , ? , ? , ? , ? , ? , ?)";
+    private String insertNewConsulta = "insert into Consulta(data_horario , sintomas , e_retorno , esta_ativa , paciente_id , prontuario_id ,convenio_id) values(? , ? , ? , ? , ? , ? , ?)";
     private PreparedStatement pstinsert;
 
-    private String selectAllConsulta = "select * from p.tb_consulta";
+    private String selectAllConsulta = "select * from Consulta";
     private PreparedStatement pstselectAll;
 
-    private String deleteConsulta = "delete from p.tb_consulta where id = ?";
+    private String deleteConsulta = "delete from Consulta where id = ?";
     private PreparedStatement pstdeleteConsulta;
 
-    private String updateConsulta = "update p.tb_consulta set sintomas = ? set e_retorno = ? set esta_ativa set paciente_id = ? set prontuario_id = ? set convenio_id = ? where id = ?";
+    private String updateConsulta = "update Consulta set sintomas = ? set e_retorno = ? set esta_ativa set paciente_id = ? set prontuario_id = ? set convenio_id = ? where id = ?";
     private PreparedStatement pstupdateConsulta;
 
-    private String getConsultaById = "select from p.tb_consulta where id = ?";
+    private String getConsultaById = "select from Consulta where id = ?";
     private PreparedStatement pstGetConsultaById;
 
     //PACIENTE
-    private final String insertNewPaciente = "insert into p.tb_paciente (nome , idade , sexo , cpf , rua ,numero ,complemento,bairro , cidade ,estado ,contato , email, data_nascimento) values(? , ? , ? , ? , ? , ?, ? , ?, ? , ?, ? , ? , ? )";
+    private final String insertNewPaciente = "insert into Paciente (nome , idade , sexo , cpf , rua ,numero ,complemento,bairro , cidade ,estado ,contato , email, dataNascimento) values(? , ? , ? , ? , ? , ?, ? , ?, ? , ?, ? , ? , ? )";
     private PreparedStatement pstInsertPaciente;
 
-    private final String selectAllPacientes = "select * from p.tb_paciente";
+    private final String selectAllPacientes = "select * from Paciente";
     private PreparedStatement pstselectPacientes;
 
-    private final String deletePaciente = "delete from p.tb_paciente where id = ?";
+    private final String deletePaciente = "delete from Paciente where id = ?";
     private PreparedStatement pstdeletePaciente;
 
-    private final String updatePaciente = "update p.tb_paciente set nome = ? set senha = ? set idade set sexo = ? set cpf = ? set rua = ?  set numero = ? set complemento = ? set bairro = ? set cidade = ? set estado = ? set contato = ? set email = ? data_nascimento = ? where id = ?";
+    private final String updatePaciente = "update Paciente set nome = ? set senha = ? set idade set sexo = ? set cpf = ? set rua = ?  set numero = ? set complemento = ? set bairro = ? set cidade = ? set estado = ? set contato = ? set email = ? data_nascimento = ? where id = ?";
     private PreparedStatement pstupdatePaciente;
 
-    private final String getPacienteByCpf= "select from p.tb_consulta where cpf = ?";
+    private final String getPacienteByCpf= "select from Paciente where cpf = ?";
     private PreparedStatement pstGetPacienteByCpf;
 
 
@@ -69,6 +80,7 @@ public class AtendenteDAOImpl implements AtendenteDAO {
 
     //cadastra uma consulta
     public void cadastrarConsulta(final Consulta consulta) throws SQLException {
+        createConnection();
         pstinsert.clearParameters();
         pstinsert.setTimestamp(1, Timestamp.valueOf(consulta.getDataHorario()));
         pstinsert.setString(2, consulta.getSintomas());
@@ -82,6 +94,7 @@ public class AtendenteDAOImpl implements AtendenteDAO {
 
     //consulta pelo id
     public Consulta getConsultaById(final int id) throws SQLException {
+        createConnection();
         pstGetConsultaById.clearParameters();
         Consulta consulta = new Consulta();
         pstGetConsultaById.setInt(1, id);
@@ -101,6 +114,7 @@ public class AtendenteDAOImpl implements AtendenteDAO {
 
     //lista todas as consultas
     public List<Consulta> listAllConsultas() throws SQLException {
+        createConnection();
         List<Consulta> localConsulta = new ArrayList<>();
 
         ResultSet result = pstselectAll.executeQuery();
@@ -120,6 +134,7 @@ public class AtendenteDAOImpl implements AtendenteDAO {
 
     //deletar consulta
     public void deleteConsulta(final int id) throws SQLException {
+        createConnection();
         pstdeleteConsulta.clearParameters();
         pstdeleteConsulta.setInt(1, id);
         pstdeleteConsulta.executeUpdate();
@@ -128,6 +143,7 @@ public class AtendenteDAOImpl implements AtendenteDAO {
     //atualizar consulta
     public int updateConsulta(final String sintomas , final boolean eRetorno, final boolean estaAtiva, final int pacienteId
             , final int prontuarioId ,final int convenioId , final int whereId) throws SQLException {
+        createConnection();
         pstupdateConsulta.clearParameters();
         pstupdateConsulta.setString(1, sintomas);
         pstupdateConsulta.setBoolean(2, eRetorno);
@@ -141,6 +157,7 @@ public class AtendenteDAOImpl implements AtendenteDAO {
 
     //cadastra um Paciente
     public int cadastrarPaciente(final Paciente paciente) throws SQLException {
+        createConnection();
         pstInsertPaciente.clearParameters();
         pstInsertPaciente.setString(1 , paciente.getNome() );
         pstInsertPaciente.setInt(2 , paciente.getIdade());
@@ -160,6 +177,7 @@ public class AtendenteDAOImpl implements AtendenteDAO {
 
     //consulta um Paciente pelo CPF
     public Paciente getPacienteByCpf(final String cpf) throws SQLException {
+        createConnection();
         pstGetConsultaById.clearParameters();
         Paciente paciente = new Paciente();
         pstGetConsultaById.setString(1, cpf);
@@ -169,7 +187,7 @@ public class AtendenteDAOImpl implements AtendenteDAO {
             paciente.setNome(resultSet.getString("nome"));
             paciente.setIdade(resultSet.getInt("idade"));
             paciente.setCpf(resultSet.getString("cpf"));
-            paciente.setSexo((Character) resultSet.getObject("sexo"));
+            paciente.setSexo(resultSet.getString("sexo").charAt(0));
             paciente.setRua(resultSet.getString("rua"));
             paciente.setNumero(resultSet.getString("numero"));
             paciente.setComplemento(resultSet.getString("complemento"));
@@ -185,6 +203,7 @@ public class AtendenteDAOImpl implements AtendenteDAO {
 
     //lista todas os Pacientes
     public List<Paciente> listAllPacientes() throws SQLException {
+        createConnection();
         List<Paciente> localPaciente = new ArrayList<>();
 
         ResultSet resultSet = pstselectPacientes.executeQuery();
@@ -203,7 +222,7 @@ public class AtendenteDAOImpl implements AtendenteDAO {
             paciente.setEstado(resultSet.getString("estado"));
             paciente.setContato(resultSet.getString("contato"));
             paciente.setEmail(resultSet.getString("email"));
-            paciente.setDataNascimento(resultSet.getTimestamp("data_nascimento").toLocalDateTime());
+            paciente.setDataNascimento(resultSet.getTimestamp("dataNascimento").toLocalDateTime());
         }
         return localPaciente;
     }
@@ -211,6 +230,7 @@ public class AtendenteDAOImpl implements AtendenteDAO {
     //deletar informaçoes de Paciente
     //por enquanto deleta o paciente
     public int deletePaciente(final int id) throws SQLException {
+        createConnection();
         pstdeletePaciente.clearParameters();
         pstdeletePaciente.setInt(1, id);
         return pstdeletePaciente.executeUpdate();
@@ -220,6 +240,7 @@ public class AtendenteDAOImpl implements AtendenteDAO {
     public int updatePaciente(String nome , int idade , char sexo , String cpf , String rua ,
                               String numero ,String complemento, String bairro , String cidade
             ,String estado ,String contato , String email, String data_nascimento , final int whereId) throws SQLException {
+        createConnection();
         pstupdatePaciente.clearParameters();
         pstupdatePaciente.setString(1, nome);
         pstupdatePaciente.setInt(2, idade);

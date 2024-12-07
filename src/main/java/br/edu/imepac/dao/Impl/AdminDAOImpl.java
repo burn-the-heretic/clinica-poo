@@ -1,10 +1,14 @@
 package br.edu.imepac.dao.Impl;
 
+import br.edu.imepac.config.ConnectionFactory;
+import br.edu.imepac.config.DbConfig;
 import br.edu.imepac.entities.Funcionario;
+import br.edu.imepac.enums.Tipo;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /*
 [
@@ -14,13 +18,22 @@ import java.util.List;
 
 public class AdminDAOImpl {
 
-    private String insertNewFuncionario = "insert into p.tb_funcionario (usuario ,  email ,senha , idade, sexo , cpf , rua ,numero , complemento , bairro ,cidade , estado , contato ,cargo ,data_nascimento) values (? , ? ,? , ? , ?, ? , ? , ?, ? , ? , ?, ? , ? , ?, ?);";
+    private void createConnection() {
+        try {
+            ConnectionFactory.getConnection(DbConfig.ip , DbConfig.porta,
+                    DbConfig.nomeBanco, DbConfig.usuario,DbConfig.senha);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String insertNewFuncionario = "insert into Funcionario (usuario ,  email ,senha , idade, sexo , cpf , rua ,numero , complemento , bairro ,cidade , estado , contato ,tipo,dataNascimento) values (? , ? ,? , ? , ?, ? , ? , ?, ? , ? , ?, ? , ? , ?, ?)";
     private PreparedStatement preparedStatementInsert;
-    private String getFuncionarioById = "select from p.tb_funcionario where id=?";
+    private String getFuncionarioById = "select from Funcionario where id=?";
     private PreparedStatement preparedStatementGetFuncionario;
-    private String deleteFuncionarioById = "delete from p.tb_funcionario where id=?";
+    private String deleteFuncionarioById = "delete from Funcionario where id=?";
     private PreparedStatement preparedStatementDeleteFuncionario;
-    private String listAllfuncionarios = "select *from p.tb_funcionario";
+    private String listAllfuncionarios = "select *from Funcionario";
     private PreparedStatement preparedStatementListAll;
 
     public AdminDAOImpl(final Connection connection) throws SQLException {
@@ -32,6 +45,7 @@ public class AdminDAOImpl {
 
     //cadastrar o funcionario
     public int cadastrarFuncionario(Funcionario funcionario) throws SQLException {
+        createConnection();
         preparedStatementInsert.clearParameters();
         preparedStatementInsert.setString(1, funcionario.getUsuario());
         preparedStatementInsert.setString(2 , funcionario.getEmail());
@@ -53,6 +67,7 @@ public class AdminDAOImpl {
 
     //pegar o funcionario pela id
     public Funcionario getFuncionarioById(final int id) throws SQLException {
+         createConnection();
          preparedStatementGetFuncionario.clearParameters();
          Funcionario funcionario = new Funcionario();
          preparedStatementGetFuncionario.setInt(1, id);
@@ -70,6 +85,7 @@ public class AdminDAOImpl {
 
     //deleta o funcionario pelo id
     public int deleteFuncionarioById(final int id) throws SQLException {
+        createConnection();
         preparedStatementDeleteFuncionario.clearParameters();
         preparedStatementDeleteFuncionario.setInt(1, id);
         return preparedStatementDeleteFuncionario.executeUpdate();
@@ -77,6 +93,7 @@ public class AdminDAOImpl {
 
     //listar todos os funcionarios
     public List<Funcionario> listAllFuncionarios() throws SQLException {
+        createConnection();
         List<Funcionario> localList = new ArrayList<>();
 
         ResultSet result = preparedStatementListAll.executeQuery();
@@ -91,7 +108,13 @@ public class AdminDAOImpl {
             funcionario.setCidade(result.getString("cidade"));
             funcionario.setEstado(result.getString("estado"));
             funcionario.setContato(result.getString("contato"));
-            //add o resto dos atributos
+            funcionario.setSexo(result.getString("sexo").charAt(0)); // Assume-se que o sexo é armazenado como 'M' ou 'F'
+            funcionario.setCpf(result.getString("cpf"));
+            funcionario.setRua(result.getString("rua"));
+            funcionario.setNumero(result.getString("numero"));
+            funcionario.setComplemento(result.getString("complemento"));
+            funcionario.setDataNascimento(result.getTimestamp("dataNascimento").toLocalDateTime()); // Caso esteja armazenado como DATETIME
+            funcionario.setRole(Tipo.valueOf(result.getString("tipo")));
             localList.add(funcionario);
         }
         return localList;

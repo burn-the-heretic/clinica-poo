@@ -16,7 +16,7 @@ public class AtendenteServiceImpl implements AtendenteService {
     //implementação da
     private final AtendenteDAO atendenteDAO;
 
-    public AtendenteServiceImpl(AtendenteDAOImpl atendenteDAOImpl, AtendenteDAO atendenteDAO) {
+    public AtendenteServiceImpl(AtendenteDAO atendenteDAO) {
         this.atendenteDAO = atendenteDAO;
     }
 
