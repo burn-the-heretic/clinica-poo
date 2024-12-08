@@ -83,7 +83,7 @@ public class AtendenteServiceImpl implements AtendenteService {
     //TESTAR
     @Override
     public PacienteResponseDTO cadastrarPaciente(CadastroPacienteDTO paciente) throws SQLException {
-        if (paciente == null || paciente.cpf() == null){
+        if (paciente == null || paciente.cpf() == null || paciente.nome() == null || paciente.contato() == null || paciente.dataNascimento() == null ){
             throw new RuntimeException("Dados requeridos incompletos");
         }
         Paciente newPaciente = toEntityPaciente(paciente);

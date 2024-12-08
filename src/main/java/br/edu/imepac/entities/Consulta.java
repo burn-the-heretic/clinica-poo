@@ -13,6 +13,7 @@ public class Consulta {
     private Paciente paciente;
     private Prontuario prontuario;
     private Convenio convenio;
+    private Funcionario funcionario;
     //funcionario
     //fazer a relação de medico e atendente
 
@@ -21,7 +22,7 @@ public class Consulta {
     }
 
     public Consulta(int id, LocalDateTime dataHorario, String sintomas, boolean eRetorno,
-                    boolean estaAtiva, Paciente paciente, Convenio convenio , Prontuario prontuario) {
+                    boolean estaAtiva, Paciente paciente, Convenio convenio , Prontuario prontuario , Funcionario funcionario) {
         this.id = id;
         this.dataHorario = dataHorario;
         this.sintomas = sintomas;
@@ -94,6 +95,14 @@ public class Consulta {
 
     public void setProntuario(Prontuario prontuario) {
         this.prontuario = prontuario;
+    }
+
+    public Funcionario getFuncionario() {
+        return funcionario;
+    }
+
+    public void setFuncionario(Funcionario funcionario) {
+        this.funcionario = funcionario;
     }
 
     @Override
