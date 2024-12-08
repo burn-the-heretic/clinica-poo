@@ -6,6 +6,7 @@ import br.edu.imepac.dao.AtendenteDAO;
 import br.edu.imepac.entities.*;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +55,7 @@ public class AtendenteDAOImpl implements AtendenteDAO {
     private final String deletePaciente = "delete from Paciente where id = ?";
     private PreparedStatement pstdeletePaciente;
 
-    private final String updatePaciente = "update Paciente set nome = ? set senha = ? set idade set sexo = ? set cpf = ? set rua = ?  set numero = ? set complemento = ? set bairro = ? set cidade = ? set estado = ? set contato = ? set email = ? data_nascimento = ? where id = ?";
+    private final String updatePaciente = "update Paciente set nome = ? set senha = ? set idade set sexo = ? set cpf = ? set rua = ?  set numero = ? set complemento = ? set bairro = ? set cidade = ? set estado = ? set contato = ? set email = ? dataNascimento = ? where id = ?";
     private PreparedStatement pstupdatePaciente;
 
     private final String getPacienteByCpf= "select from Paciente where cpf = ?";
@@ -196,7 +197,7 @@ public class AtendenteDAOImpl implements AtendenteDAO {
             paciente.setEstado(resultSet.getString("estado"));
             paciente.setContato(resultSet.getString("contato"));
             paciente.setEmail(resultSet.getString("email"));
-            paciente.setDataNascimento(resultSet.getTimestamp("data_nascimento").toLocalDateTime());
+            paciente.setDataNascimento(resultSet.getTimestamp("dataNascimento").toLocalDateTime());
         }
         return paciente;
     }
@@ -229,17 +230,17 @@ public class AtendenteDAOImpl implements AtendenteDAO {
 
     //deletar informaçoes de Paciente
     //por enquanto deleta o paciente
-    public int deletePaciente(final int id) throws SQLException {
+    public int deletePaciente(final String cpf) throws SQLException {
         createConnection();
         pstdeletePaciente.clearParameters();
-        pstdeletePaciente.setInt(1, id);
+        pstdeletePaciente.setString(1, cpf);
         return pstdeletePaciente.executeUpdate();
     }
 
     //atualizar Paciente
     public int updatePaciente(String nome , int idade , char sexo , String cpf , String rua ,
-                              String numero ,String complemento, String bairro , String cidade
-            ,String estado ,String contato , String email, String data_nascimento , final int whereId) throws SQLException {
+                              String numero , String complemento, String bairro , String cidade
+            , String estado , String contato , String email, LocalDateTime data_nascimento , final int whereId) throws SQLException {
         createConnection();
         pstupdatePaciente.clearParameters();
         pstupdatePaciente.setString(1, nome);

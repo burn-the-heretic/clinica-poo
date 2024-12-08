@@ -6,7 +6,6 @@ import br.edu.imepac.dao.Impl.AdminDAOImpl;
 import br.edu.imepac.dao.Impl.AtendenteDAOImpl;
 import br.edu.imepac.entities.Funcionario;
 import br.edu.imepac.enums.Tipo;
-import br.edu.imepac.services.impl.AtendenteServiceImpl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -58,9 +57,6 @@ public class App {
 //
                 AtendenteDAOImpl atendenteDAO = new AtendenteDAOImpl(connection);
                 AdminDAOImpl adminDAO = new AdminDAOImpl(connection);
-                AtendenteServiceImpl atendenteService = new AtendenteServiceImpl(atendenteDAO);
-                atendenteService.listarConsultas();
-                System.out.println(atendenteService.listarConsultas());
                 System.out.println(adminDAO.listAllFuncionarios());
                 adminDAO.cadastrarFuncionario(funcionario);
 //                Prontuario prontuario = new Prontuario();

@@ -13,6 +13,7 @@ public class Consulta {
     private Paciente paciente;
     private Prontuario prontuario;
     private Convenio convenio;
+    //funcionario
     //fazer a relação de medico e atendente
 
 

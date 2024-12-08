@@ -5,7 +5,7 @@ import br.edu.imepac.entities.Consulta;
 import java.time.LocalDateTime;
 
 public record ConsultaResponseDTO(
-        LocalDateTime dataHorario,
+         LocalDateTime dataHorario,
          String sintomas ,
          boolean eRetorno,
          boolean estaAtiva,

@@ -4,6 +4,7 @@ import br.edu.imepac.entities.Consulta;
 import br.edu.imepac.entities.Paciente;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface AtendenteDAO {
@@ -22,7 +23,7 @@ public interface AtendenteDAO {
     int cadastrarPaciente(final Paciente paciente) throws SQLException;
     Paciente getPacienteByCpf(final String cpf) throws SQLException;
     List<Paciente> listAllPacientes() throws SQLException;
-    int deletePaciente(final int id) throws SQLException;
+    int deletePaciente(final String cpf) throws SQLException;
     int updatePaciente(String nome,
                        int idade,
                        char sexo,
@@ -35,6 +36,6 @@ public interface AtendenteDAO {
                        String estado,
                        String contato,
                        String email,
-                       String data_nascimento,
+                       LocalDateTime data_nascimento,
                        final int whereId) throws SQLException;
 }
