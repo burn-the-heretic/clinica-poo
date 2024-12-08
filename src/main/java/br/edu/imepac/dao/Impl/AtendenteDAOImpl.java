@@ -30,7 +30,7 @@ public class AtendenteDAOImpl implements AtendenteDAO {
     }
 
     //CONSULTA
-    private String insertNewConsulta = "insert into Consulta(data_horario , sintomas , e_retorno , esta_ativa , paciente_id , prontuario_id ,convenio_id) values(? , ? , ? , ? , ? , ? , ?)";
+    private String insertNewConsulta = "insert into Consulta(data_horario , sintomas , e_retorno , esta_ativa , paciente_id , prontuario_id ,convenio_id , funcionario_id) values(? , ? , ? , ? , ? , ? , ? ,?)";
     private PreparedStatement pstinsert;
 
     private String selectAllConsulta = "select * from Consulta";
@@ -90,6 +90,7 @@ public class AtendenteDAOImpl implements AtendenteDAO {
         pstinsert.setInt(5, consulta.getPaciente().getId());
         pstinsert.setInt(6, consulta.getProntuario().getId());
         pstinsert.setInt(7, consulta.getConvenio().getId());
+        pstinsert.setInt(8, consulta.getFuncionario().getId());
         pstinsert.executeUpdate();
     }
 
@@ -109,6 +110,7 @@ public class AtendenteDAOImpl implements AtendenteDAO {
             consulta.setConvenio((Convenio) resultSet.getObject("convenio_id"));
             consulta.setPaciente((Paciente) resultSet.getObject("paciente_id"));
             consulta.setProntuario((Prontuario) resultSet.getObject("prontuario_id"));
+            consulta.setFuncionario((Funcionario) resultSet.getObject("funcionario_id"));
         }
         return consulta;
     }
@@ -129,6 +131,8 @@ public class AtendenteDAOImpl implements AtendenteDAO {
             consulta.setConvenio((Convenio) result.getObject("convenio_id"));
             consulta.setPaciente((Paciente) result.getObject("paciente_id"));
             consulta.setProntuario((Prontuario) result.getObject("prontuario_id"));
+            consulta.setFuncionario((Funcionario) result.getObject("funcionario_id"));
+            localConsulta.add(consulta);
         }
         return localConsulta;
     }
@@ -224,6 +228,7 @@ public class AtendenteDAOImpl implements AtendenteDAO {
             paciente.setContato(resultSet.getString("contato"));
             paciente.setEmail(resultSet.getString("email"));
             paciente.setDataNascimento(resultSet.getTimestamp("dataNascimento").toLocalDateTime());
+            localPaciente.add(paciente);
         }
         return localPaciente;
     }
@@ -257,6 +262,6 @@ public class AtendenteDAOImpl implements AtendenteDAO {
         pstupdatePaciente.setString(12, email);
         pstupdatePaciente.setTimestamp(13, Timestamp.valueOf(data_nascimento));
         pstupdatePaciente.setInt(14, whereId);
-        return pstupdateConsulta.executeUpdate();
+        return pstupdatePaciente.executeUpdate();
     }
 }
