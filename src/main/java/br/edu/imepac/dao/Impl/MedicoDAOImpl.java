@@ -84,10 +84,10 @@ public class MedicoDAOImpl implements MedicoDAO {
     @Override
     public Prontuario getProntuarioById(int id) throws SQLException {
         createConnection();
-        pstinsert.clearParameters();
+        pstGetProntuarioById.clearParameters();
         Prontuario prontuario = new Prontuario();
-        pstinsert.setInt(1 , id);
-        ResultSet resultSet = pstinsert.executeQuery();
+        pstGetProntuarioById.setInt(1 , id);
+        ResultSet resultSet = pstGetProntuarioById.executeQuery();
         while (resultSet.next()) {
             prontuario.setId(resultSet.getInt("id"));
             prontuario.setReceituario(resultSet.getString("receituario"));
