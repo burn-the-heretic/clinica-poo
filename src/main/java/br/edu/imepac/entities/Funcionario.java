@@ -5,30 +5,30 @@ import br.edu.imepac.enums.Tipo;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class Funcionario {
-    private Integer id;
-    private String usuario;
-    private Integer senha;
-    private Integer idade;
-    private char sexo;
-    private String cpf;
-    private String rua;
-    private String numero;
-    private String complemento;
-    private String bairro;
-    private String cidade;
-    private String estado;
-    private String contato;
-    private String email;
-    private LocalDateTime dataNascimento;
+        public class Funcionario {
+            private Integer id;
+            private String usuario;
+            private Integer senha;
+            private Integer idade;
+            private char sexo;
+            private String cpf;
+            private String rua;
+            private String numero;
+            private String complemento;
+            private String bairro;
+            private String cidade;
+            private String estado;
+            private String contato;
+            private String email;
+            private LocalDateTime dataNascimento;
 
-    //1 funcionario tem apenas um perfil e um perfil tem 0 ou mais usuarios
-    private Perfil perfil;
+            //1 funcionario tem apenas um perfil e um perfil tem 0 ou mais usuarios
+            private Perfil perfil;
 
-    //1 funcionario pode ter uma especialidade e 1 especialidade pode ter 0 ou mais funcionarios
-    private Especialidade especialidade;
-    //cargo do funcionario
-    private Tipo role;
+            //1 funcionario pode ter uma especialidade e 1 especialidade pode ter 0 ou mais funcionarios
+            private Especialidade especialidade;
+            //cargo do funcionario
+            private Tipo role;
 
     public Funcionario() {
     }
@@ -193,13 +193,14 @@ public class Funcionario {
         this.role = role;
     }
 
+    public void setPerfil(Perfil perfil) {
+        this.perfil = perfil;
+    }
+
     public Perfil getPerfil() {
         return perfil;
     }
 
-    public void setPerfil(Perfil perfil) {
-        this.perfil = perfil;
-    }
 
     @Override
     public boolean equals(Object o) {
