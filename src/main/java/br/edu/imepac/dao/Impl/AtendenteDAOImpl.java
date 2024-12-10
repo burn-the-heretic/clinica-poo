@@ -61,6 +61,21 @@ public class AtendenteDAOImpl implements AtendenteDAO {
     private final String getPacienteByCpf= "select from Paciente where cpf = ?";
     private PreparedStatement pstGetPacienteByCpf;
 
+    private String insertNewConvenio = "insert into Convenio (nome, descricao) values (?, ?)";
+    private PreparedStatement preparedStatementInsertConvenio;
+
+    private String getConvenioById = "select * from Convenio where id = ?";
+    private PreparedStatement preparedStatementGetConvenioById;
+
+    private String deleteConvenioById = "delete from Convenio where id = ?";
+    private PreparedStatement preparedStatementDeleteConvenio;
+
+    private String listAllConvenios = "select * from Convenio";
+    private PreparedStatement preparedStatementListAllConvenios;
+
+    private String updateConvenio = "update Convenio set nome = ?, descricao = ? where id = ?";
+    private PreparedStatement preparedStatementUpdateConvenio;
+
 
     //constructor
     public AtendenteDAOImpl(final Connection con) throws SQLException {
@@ -77,6 +92,13 @@ public class AtendenteDAOImpl implements AtendenteDAO {
         pstdeletePaciente = con.prepareStatement(deletePaciente);
         pstupdatePaciente = con.prepareStatement(updatePaciente);
         pstGetPacienteByCpf = con.prepareStatement(getPacienteByCpf);
+
+        //CONVENIO
+        preparedStatementInsertConvenio = con.prepareStatement(insertNewConvenio);
+        preparedStatementGetConvenioById = con.prepareStatement(getConvenioById);
+        preparedStatementDeleteConvenio = con.prepareStatement(deleteConvenioById);
+        preparedStatementListAllConvenios = con.prepareStatement(listAllConvenios);
+        preparedStatementUpdateConvenio = con.prepareStatement(updateConvenio);
     }
 
     //cadastra uma consulta
@@ -264,4 +286,57 @@ public class AtendenteDAOImpl implements AtendenteDAO {
         pstupdatePaciente.setInt(14, whereId);
         return pstupdatePaciente.executeUpdate();
     }
+
+    public int cadastrarConvenio(Convenio convenio) throws SQLException {
+        createConnection();
+        preparedStatementInsertConvenio.clearParameters();
+        preparedStatementInsertConvenio.setString(1, convenio.getNome());
+        preparedStatementInsertConvenio.setString(2, convenio.getDescricao());
+        return preparedStatementInsertConvenio.executeUpdate();
+    }
+
+    public Convenio getConvenioById(final int id) throws SQLException {
+        createConnection();
+        preparedStatementGetConvenioById.clearParameters();
+        Convenio convenio = new Convenio();
+        preparedStatementGetConvenioById.setInt(1, id);
+        ResultSet resultSet = preparedStatementGetConvenioById.executeQuery();
+        while (resultSet.next()) {
+            convenio.setId(resultSet.getInt("id"));
+            convenio.setNome(resultSet.getString("nome"));
+            convenio.setDescricao(resultSet.getString("descricao"));
+        }
+        return convenio;
+    }
+
+    public int deleteConvenioById(final int id) throws SQLException {
+        createConnection();
+        preparedStatementDeleteConvenio.clearParameters();
+        preparedStatementDeleteConvenio.setInt(1, id);
+        return preparedStatementDeleteConvenio.executeUpdate();
+    }
+
+    public List<Convenio> listAllConvenios() throws SQLException {
+        createConnection();
+        List<Convenio> convenios = new ArrayList<>();
+        ResultSet resultSet = preparedStatementListAllConvenios.executeQuery();
+        while (resultSet.next()) {
+            Convenio convenio = new Convenio();
+            convenio.setId(resultSet.getInt("id"));
+            convenio.setNome(resultSet.getString("nome"));
+            convenio.setDescricao(resultSet.getString("descricao"));
+            convenios.add(convenio);
+        }
+        return convenios;
+    }
+
+    public int updateConvenio(String nome, String descricao, final int id) throws SQLException {
+        createConnection();
+        preparedStatementUpdateConvenio.clearParameters();
+        preparedStatementUpdateConvenio.setString(1, nome);
+        preparedStatementUpdateConvenio.setString(2, descricao);
+        preparedStatementUpdateConvenio.setInt(3, id);
+        return preparedStatementUpdateConvenio.executeUpdate();
+    }
+
 }
