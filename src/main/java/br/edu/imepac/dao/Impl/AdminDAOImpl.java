@@ -2,6 +2,7 @@
 
     import br.edu.imepac.config.ConnectionFactory;
     import br.edu.imepac.config.DbConfig;
+    import br.edu.imepac.dao.AdminDAO;
     import br.edu.imepac.entities.*;
     import br.edu.imepac.enums.Tipo;
 
@@ -12,7 +13,7 @@
 
 
 
-    public class AdminDAOImpl {
+    public class AdminDAOImpl implements AdminDAO {
 
         private void createConnection() {
             try {
