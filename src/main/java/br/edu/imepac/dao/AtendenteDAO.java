@@ -1,6 +1,7 @@
 package br.edu.imepac.dao;
 
 import br.edu.imepac.entities.Consulta;
+import br.edu.imepac.entities.Convenio;
 import br.edu.imepac.entities.Paciente;
 
 import java.sql.SQLException;
@@ -38,4 +39,11 @@ public interface AtendenteDAO {
                        String email,
                        LocalDateTime data_nascimento,
                        final int whereId) throws SQLException;
+
+
+    int updateConvenio(String nome, String descricao, final int id)throws SQLException;
+    List<Convenio> listAllConvenios()throws SQLException;
+    int deleteConvenioById(final int id)throws SQLException;
+    Convenio getConvenioById(final int id)throws SQLException;
+    int cadastrarConvenio(Convenio convenio)throws SQLException;
 }
