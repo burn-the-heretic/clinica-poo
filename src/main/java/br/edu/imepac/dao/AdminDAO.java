@@ -35,7 +35,7 @@ public interface AdminDAO {
     List<Consulta> listMyConsultas(final int medicoId) throws SQLException;
 
 
-    int cadastrarPronturario(final Prontuario prontuario) throws SQLException;
+    int cadastrarProntuario(final Prontuario prontuario) throws SQLException;
     Prontuario getProntuarioById(final int id) throws SQLException;
     List<Prontuario> listAllProntuarios() throws SQLException;
     int deleteProntuario(final int id) throws SQLException;
