@@ -2,93 +2,136 @@ package br.edu.imepac;
 
 import br.edu.imepac.config.ConnectionFactory;
 import br.edu.imepac.config.DbConfig;
+import br.edu.imepac.dao.AdminDAO;
 import br.edu.imepac.dao.Impl.AdminDAOImpl;
 import br.edu.imepac.dao.Impl.AtendenteDAOImpl;
-import br.edu.imepac.entities.Funcionario;
+import br.edu.imepac.entities.*;
 import br.edu.imepac.enums.Tipo;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.List;
+
+import static br.edu.imepac.config.ConnectionFactory.getConnection;
 
 
 /*
 TESTES
  */
 public class App {
-    public static void main(String[] args) throws ClassNotFoundException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        try {
-            Connection connection = ConnectionFactory.getConnection(DbConfig.ip , DbConfig.porta,
-                    DbConfig.nomeBanco, DbConfig.usuario,DbConfig.senha);
-            if (connection != null){
-                System.out.printf("Connected to %s\n", connection);
-                Funcionario funcionario = new Funcionario();
-                funcionario.setUsuario("TITOR");
-                funcionario.setCpf("00000000000");
-                funcionario.setEmail("admin@imepac.com");
-                funcionario.setBairro("Bairro");
-                funcionario.setCidade("Cidade");
-                funcionario.setEstado("MG");
-                funcionario.setRua("Rua");
-                funcionario.setComplemento("Complemento");
-                funcionario.setNumero("12345");
-                funcionario.setContato("999292");
-                funcionario.setDataNascimento(LocalDateTime.now());
-                funcionario.setSenha(1232434);
-                funcionario.setIdade(12);
-                funcionario.setRole(Tipo.MEDICO);
-//                Paciente paciente = new Paciente();
-//
-//                paciente.setNome("João Silva"); // Nome do paciente
-//                paciente.setIdade(30); // Idade do paciente
-//                paciente.setSexo('M'); // Sexo do paciente (M ou F)
-//                paciente.setCpf("123.456.789-00"); // CPF do paciente
-//                paciente.setRua("Rua das Flores"); // Endereço - Rua
-//                paciente.setNumero("123"); // Endereço - Número
-//                paciente.setComplemento("Apto 101"); // Complemento do endereço
-//                paciente.setBairro("Centro"); // Bairro
-//                paciente.setCidade("São Paulo"); // Cidade
-//                paciente.setEstado("SP"); // Estado
-//                paciente.setContato("99999-8888"); // Contato (telefone)
-//                paciente.setEmail("joao.silva@email.com"); // Email
-//                paciente.setDataNascimento(LocalDateTime.of(1993, 5, 15, 0, 0));
-//
-//
-                AtendenteDAOImpl atendenteDAO = new AtendenteDAOImpl(connection);
-                AdminDAOImpl adminDAO = new AdminDAOImpl(connection);
-                System.out.println(adminDAO.listAllFuncionarios());
-                adminDAO.cadastrarFuncionario(funcionario);
-//                Prontuario prontuario = new Prontuario();
+    public static void main(String[] args) throws ClassNotFoundException, SQLException {
+        AdminDAO adminDAO = new AdminDAOImpl(getConnection(DbConfig.ip , DbConfig.porta,
+                DbConfig.nomeBanco, DbConfig.usuario,DbConfig.senha));
 
-//                Convenio convenio = new Convenio();
-//
-//// Definindo valores para o convênio// ID do convênio (geralmente auto-incrementado pelo banco de dados)
-//                convenio.setNome("Unimed São Paulo"); // Nome do convênio
-//                convenio.setDescricao("Convênio médico com cobertura nacional para consultas e exames."); // Descrição do convênio
-//// Definindo valores para o prontuário/ ID do prontuário (geralmente auto-incrementado)
-//                prontuario.setReceituario("Receita de antibiótico para tratamento de infecção."); // Receituário médico
-//                prontuario.setExames("Exame de sangue: tudo normal. Radiografia: não foram encontrados problemas."); // Resultados de exames
-//                prontuario.setObservacao("Paciente apresenta sinais de melhora, continuar com o tratamento por mais 7 dias."); // Observações médicas
-//
-//
-//                CadastroConsultaDTO cadastroConsultaDTO = new CadastroConsultaDTO(
-//                        LocalDateTime.now(),
-//                        "dor de cabeça",
-//                        true,
-//                        true,
-//                        paciente,
-//                        prontuario,
-//                        convenio
-//                );
-//                atendenteService.cadastrar
-//                atendenteService.cadastrarConsulta(cadastroConsultaDTO);
+        try {
+            // Testar o cadastro de um novo funcionário
+            Funcionario funcionario = new Funcionario();
+            funcionario.setId(2);
+            funcionario.setUsuario("joao123");
+            funcionario.setEmail("joao@example.com");
+            funcionario.setSenha(123456);
+            funcionario.setIdade(30);
+            funcionario.setSexo('M');
+            funcionario.setCpf("12345678901");
+            funcionario.setRua("Rua Principal");
+            funcionario.setNumero("123");
+            funcionario.setComplemento("Apto 1");
+            funcionario.setBairro("Centro");
+            funcionario.setCidade("São Paulo");
+            funcionario.setEstado("SP");
+            funcionario.setContato("(11) 98765-4321");
+            funcionario.setRole(Tipo.ATENDENTE);
+            funcionario.setDataNascimento(LocalDateTime.of(1993, 5, 10, 0, 0));
+
+            // Testar o cadastro de uma especialidade
+            Especialidade especialidade = new Especialidade();
+            especialidade.setNome("Cardiologia");
+            especialidade.setDescricao("Especialidade médica focada nas doenças do coração.");
+
+            int especialidadeResult = adminDAO.cadastrarEspecialidade(especialidade);
+            System.out.println("Especialidade cadastrada com sucesso. Linhas afetadas: " + especialidadeResult);
+
+            // Testar o cadastro de um prontuário
+            Prontuario prontuario = new Prontuario();
+            prontuario.setId(1);
+            prontuario.setReceituario("Receituário padrão");
+            prontuario.setExames("Exames gerais realizados");
+            prontuario.setObservacao("Paciente em bom estado geral");
+
+            int prontuarioResult = adminDAO.cadastrarProntuario(prontuario);
+            System.out.println("Prontuário cadastrado com sucesso. Linhas afetadas: " + prontuarioResult);
+
+            // Testar o cadastro de um convênio
+            Convenio convenio = new Convenio();
+            convenio.setId(1);
+            convenio.setNome("Plano Saúde Vida");
+            convenio.setDescricao("Convênio médico completo");
+
+            int convenioResult = adminDAO.cadastrarConvenio(convenio);
+            System.out.println("Convênio cadastrado com sucesso. Linhas afetadas: " + convenioResult);
+
+            // Testar o cadastro de um novo paciente
+            Paciente paciente = new Paciente();
+            paciente.setId(99);
+            paciente.setNome("Joao zeca");
+            paciente.setIdade(25);
+            paciente.setSexo('F');
+            paciente.setCpf("98765432100");
+            paciente.setRua("Rua das Flores");
+            paciente.setNumero("321");
+            paciente.setComplemento("Casa 2");
+            paciente.setBairro("Jardim");
+            paciente.setCidade("Curitiba");
+            paciente.setEstado("PR");
+            paciente.setContato("(41) 91234-5678");
+            paciente.setEmail("maria.silva@example.com");
+            paciente.setDataNascimento(LocalDateTime.of(1998, 7, 20, 0, 0));
+
+            int pacienteResult = adminDAO.cadastrarPaciente(paciente);
+            System.out.println("Paciente cadastrado com sucesso. Linhas afetadas: " + pacienteResult);
+
+            // Testar a busca de um paciente pelo CPF
+            Paciente fetchedPaciente = adminDAO.getPacienteByCpf("98765432100");
+            System.out.println("Paciente buscado: " + fetchedPaciente.getNome());
+
+            // Testar a listagem de todos os pacientes
+            List<Paciente> pacientes = adminDAO.listAllPacientes();
+            System.out.println("Lista de pacientes:");
+            for (Paciente p : pacientes) {
+                System.out.println("- " + p.getNome());
             }
-            else {
-                System.out.println("Failed to connect to database");
+
+            int result = adminDAO.cadastrarFuncionario(funcionario);
+            System.out.println("Funcionário cadastrado com sucesso. Linhas afetadas: " + result);
+
+            // Testar a busca de um funcionário pelo ID
+            Funcionario fetchedFuncionario = adminDAO.getFuncionarioById(1);
+            System.out.println("Funcionário buscado: " + fetchedFuncionario.getUsuario());
+
+            // Testar a atualização de um funcionário
+            int updateResult = adminDAO.updateFuncionario(
+                    "joao_updated", 43 , 'M', "12345678901", "Rua Nova", "456",
+                    "Apto 2", "Bairro Novo", "Rio de Janeiro", "RJ",
+                    "(21) 99999-9999", "joao_updated@example.com", 654321,
+                    LocalDateTime.of(1992, 6, 15, 0, 0) , Tipo.ATENDENTE, 1
+            );
+            System.out.println("Funcionário atualizado. Linhas afetadas: " + updateResult);
+
+
+            // Testar a listagem de todos os funcionários
+            List<Funcionario> funcionarios = adminDAO.listAllFuncionarios();
+            System.out.println("Lista de funcionários:");
+            for (Funcionario f : funcionarios) {
+                System.out.println("- " + f.getUsuario());
             }
+
+            // Testar a busca de uma consulta pelo ID
+            Consulta fetchedConsulta = adminDAO.getConsultaById(1);
+            System.out.println("Consulta buscada: " + fetchedConsulta.getSintomas());
+
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 }

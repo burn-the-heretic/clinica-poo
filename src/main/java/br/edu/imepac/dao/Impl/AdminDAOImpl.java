@@ -12,7 +12,9 @@
     import java.util.List;
 
 
-
+/*
+  linha 186 = agregar juntamente com o perfil e especialidade , provavelmente mudando tambem no banco de dados
+ */
     public class AdminDAOImpl implements AdminDAO {
 
         private void createConnection() {
@@ -26,20 +28,20 @@
 
         private String insertNewFuncionario = "insert into Funcionario (usuario ,  email ,senha , idade, sexo , cpf , rua ,numero , complemento , bairro ,cidade , estado , contato ,tipo,dataNascimento) values (? , ? ,? , ? , ?, ? , ? , ?, ? , ? , ?, ? , ? , ?, ?)";
         private PreparedStatement preparedStatementInsert;
-        private String getFuncionarioById = "select from Funcionario where id=?";
+        private String getFuncionarioById = "SELECT *FROM Funcionario where id=?";
         private PreparedStatement preparedStatementGetFuncionario;
         private String deleteFuncionarioById = "delete from Funcionario where id=?";
         private PreparedStatement preparedStatementDeleteFuncionario;
-        private String listAllfuncionarios = "select *from Funcionario";
+        private String listAllfuncionarios = "SELECT *FROM Funcionario";
         private PreparedStatement preparedStatementListAll;
-        private String updateFuncionario = "update Funcionario set usuario = ? set senha = ? set idade set sexo = ? set cpf = ? set rua = ?  set numero = ? set complemento = ? set bairro = ? set cidade = ? set estado = ? set contato = ? set email = ? dataNascimento = ? set tipo = ? where id = ?";
+        private String updateFuncionario = "UPDATE Funcionario SET usuario = ?, senha = ?, idade = ?, sexo = ?, cpf = ?, rua = ?, numero = ?, complemento = ?, bairro = ?, cidade = ?, estado = ?, contato = ?, email = ?, dataNascimento = ?, tipo = ? WHERE id = ?";
         private PreparedStatement preparedStatementUpdateFuncionario;
 
         //CONSULTA
-        private String insertNewConsulta = "insert into Consulta(data_horario , sintomas , e_retorno , esta_ativa , paciente_id , prontuario_id ,convenio_id , funcionario_id) values(? , ? , ? , ? , ? , ? , ? ,?)";
+        private String insertNewConsulta = "insert into Consulta(dataHorario , sintomas , eRetorno , estaAtiva , id_paciente , id_funcionario , id_prontuario ,id_convenio) values(? , ? , ? , ? , ? , ? , ? ,?)";
         private PreparedStatement pstinsert;
 
-        private String selectAllConsulta = "select * from Consulta";
+        private String selectAllConsulta = "SELECT *FROM Consulta";
         private PreparedStatement pstselectAll;
 
         private String deleteConsulta = "delete from Consulta where id = ?";
@@ -48,7 +50,7 @@
         private String updateConsulta = "update Consulta set sintomas = ? set e_retorno = ? set esta_ativa set paciente_id = ? set prontuario_id = ? set convenio_id = ? where id = ?";
         private PreparedStatement pstupdateConsulta;
 
-        private String getConsultaById = "select from Consulta where id = ?";
+        private String getConsultaById = "SELECT *FROM Consulta where id = ?";
         private PreparedStatement pstGetConsultaById;
 
         //PACIENTE
@@ -64,17 +66,17 @@
         private final String updatePaciente = "update Paciente set nome = ? set senha = ? set idade set sexo = ? set cpf = ? set rua = ?  set numero = ? set complemento = ? set bairro = ? set cidade = ? set estado = ? set contato = ? set email = ? dataNascimento = ? where id = ?";
         private PreparedStatement pstupdatePaciente;
 
-        private final String getPacienteByCpf= "select from Paciente where cpf = ?";
+        private final String getPacienteByCpf= "SELECT *FROM Paciente WHERE cpf = ?";
         private PreparedStatement pstGetPacienteByCpf;
 
 
-        private String getConsulta = "select *from Consulta where funcionario_id= ?";
+        private String getConsulta = "SELECT *FROM Consulta where funcionario_id= ?";
         private PreparedStatement pstGetConsultasById;
 
-        private String insertNewProntuario = "insert into Prontuario(receituario , exames , observacao) values(? , ? , ?)";
+        private String insertNewProntuario = "insert into Prontuario(receituario , exames , observacao) values (? , ? , ?)";
         private PreparedStatement pstinsertProntuario;
 
-        private String selectAllProntuarios = "select * from Prontuario";
+        private String selectAllProntuarios = "SELECT *FROM Prontuario";
         private PreparedStatement pstselectAllProntuario;
 
         private String deleteProntuario = "delete from Prontuario where id = ?";
@@ -83,19 +85,19 @@
         private String updateProntuario = "update Prontuario set receituario = ? set exames = ? set observacao where id = ?";
         private PreparedStatement pstupdate;
 
-        private String getProntuarioById = "select from Prontuario where id = ?";
+        private String getProntuarioById = "SELECT *FROM Prontuario where id = ?";
         private PreparedStatement pstGetProntuarioById;
 
         private String insertNewConvenio = "insert into Convenio (nome, descricao) values (?, ?)";
         private PreparedStatement preparedStatementInsertConvenio;
 
-        private String getConvenioById = "select * from Convenio where id = ?";
+        private String getConvenioById = "SELECT *FROM Convenio where id = ?";
         private PreparedStatement preparedStatementGetConvenioById;
 
         private String deleteConvenioById = "delete from Convenio where id = ?";
         private PreparedStatement preparedStatementDeleteConvenio;
 
-        private String listAllConvenios = "select * from Convenio";
+        private String listAllConvenios = "SELECT *FROM Convenio";
         private PreparedStatement preparedStatementListAllConvenios;
 
         private String updateConvenio = "update Convenio set nome = ?, descricao = ? where id = ?";
@@ -105,13 +107,13 @@
         private String insertNewEspecialidade = "insert into Especialidade (nome, descricao) values (?, ?)";
         private PreparedStatement preparedStatementInsertEspecialidade;
 
-        private String getEspecialidadeById = "select * from Especialidade where id = ?";
+        private String getEspecialidadeById = "SELECT *FROM Especialidade where id = ?";
         private PreparedStatement preparedStatementGetEspecialidadeById;
 
         private String deleteEspecialidadeById = "delete from Especialidade where id = ?";
         private PreparedStatement preparedStatementDeleteEspecialidade;
 
-        private String listAllEspecialidades = "select * from Especialidade";
+        private String listAllEspecialidades = "SELECT *FROM Especialidade";
         private PreparedStatement preparedStatementListAllEspecialidades;
 
         private String updateEspecialidade = "update Especialidade set nome = ?, descricao = ? where id = ?";
@@ -139,8 +141,8 @@
 
             //MEDICO
             pstGetConsultasById = connection.prepareStatement(getConsulta);
-            pstinsert = connection.prepareStatement(insertNewProntuario);
-            pstselectAll = connection.prepareStatement(selectAllProntuarios);
+            pstinsertProntuario = connection.prepareStatement(insertNewProntuario);
+            pstselectAllProntuario = connection.prepareStatement(selectAllProntuarios);
             pstdelete = connection.prepareStatement(deleteProntuario);
             pstupdate = connection.prepareStatement(updateProntuario);
             pstGetProntuarioById = connection.prepareStatement(getProntuarioById);
@@ -207,8 +209,8 @@
                  funcionario.setEstado(resultSet.getString("estado"));
                  funcionario.setContato(resultSet.getString("contato"));
                  funcionario.setDataNascimento(resultSet.getTimestamp("dataNascimento").toLocalDateTime());
-                 funcionario.setPerfil(resultSet.getObject("perfil", Perfil.class));
-                 funcionario.setEspecialidade(resultSet.getObject("especialidade", Especialidade.class));
+//                 funcionario.setPerfil(resultSet.getObject("perfil", Perfil.class));
+//                 funcionario.setEspecialidade(resultSet.getObject("especialidade", Especialidade.class));
              }
              return funcionario;
         }
@@ -256,20 +258,20 @@
              createConnection();
              preparedStatementUpdateFuncionario.clearParameters();
              preparedStatementUpdateFuncionario.setString(1, usuario);
-             preparedStatementUpdateFuncionario.setInt(2, idade);
-             preparedStatementUpdateFuncionario.setInt(3, sexo);
-             preparedStatementUpdateFuncionario.setString(4, cpf);
-             preparedStatementUpdateFuncionario.setString(5, rua);
-             preparedStatementUpdateFuncionario.setString(6, numero);
-             preparedStatementUpdateFuncionario.setString(7, complemento);
-             preparedStatementUpdateFuncionario.setString(8, bairro);
-             preparedStatementUpdateFuncionario.setString(9, cidade);
-             preparedStatementUpdateFuncionario.setString(10, estado);
-             preparedStatementUpdateFuncionario.setString(11, contato);
-             preparedStatementUpdateFuncionario.setString(12, email);
-             preparedStatementUpdateFuncionario.setInt(13,  senha);
+             preparedStatementUpdateFuncionario.setInt(2, senha);
+             preparedStatementUpdateFuncionario.setInt(3, idade);
+            preparedStatementUpdateFuncionario.setString(4, String.valueOf(sexo));
+             preparedStatementUpdateFuncionario.setString(5, cpf);
+             preparedStatementUpdateFuncionario.setString(6, rua);
+             preparedStatementUpdateFuncionario.setString(7, numero);
+             preparedStatementUpdateFuncionario.setString(8, complemento);
+             preparedStatementUpdateFuncionario.setString(9, bairro);
+             preparedStatementUpdateFuncionario.setString(10, cidade);
+             preparedStatementUpdateFuncionario.setString(11, estado);
+             preparedStatementUpdateFuncionario.setString(12, contato);
+             preparedStatementUpdateFuncionario.setString(13, email);
              preparedStatementUpdateFuncionario.setTimestamp(14 , Timestamp.valueOf(dataNnascimento));
-             preparedStatementUpdateFuncionario.setObject(15 , tipo);
+             preparedStatementUpdateFuncionario.setString(15 , String.valueOf(tipo));
              preparedStatementUpdateFuncionario.setInt(16 , whereId);
              return preparedStatementUpdateFuncionario.executeUpdate();
           }
@@ -282,9 +284,9 @@
             pstinsert.setBoolean(3, consulta.iseRetorno());
             pstinsert.setBoolean(4, consulta.isEstaAtiva());
             pstinsert.setInt(5, consulta.getPaciente().getId());
-            pstinsert.setInt(6, consulta.getProntuario().getId());
-            pstinsert.setInt(7, consulta.getConvenio().getId());
-            pstinsert.setInt(8, consulta.getFuncionario().getId());
+            pstinsert.setInt(6, consulta.getFuncionario().getId());
+            pstinsert.setInt(7, consulta.getProntuario().getId());
+            pstinsert.setInt(8, consulta.getConvenio().getId());
             pstinsert.executeUpdate();
         }
 
@@ -297,7 +299,7 @@
             ResultSet resultSet = pstGetConsultaById.executeQuery();
             while (resultSet.next()) {
                 consulta.setId(resultSet.getInt("id"));
-                consulta.setDataHorario(resultSet.getTimestamp("data_horario").toLocalDateTime());
+                consulta.setDataHorario(resultSet.getTimestamp("dataHorario").toLocalDateTime());
                 consulta.setSintomas(resultSet.getString("sintomas"));
                 consulta.seteRetorno(resultSet.getBoolean("e_retorno"));
                 consulta.setEstaAtiva(resultSet.getBoolean("esta_ativa"));
@@ -318,7 +320,7 @@
             while (result.next()) {
                 Consulta consulta = new Consulta();
                 consulta.setId(result.getInt("id"));
-                consulta.setDataHorario(result.getTimestamp("data_horario").toLocalDateTime());
+                consulta.setDataHorario(result.getTimestamp("dataHorario").toLocalDateTime());
                 consulta.seteRetorno(result.getBoolean("e_retorno"));
                 consulta.setEstaAtiva(result.getBoolean("esta_ativa"));
                 consulta.setSintomas(result.getString("sintomas"));
@@ -377,9 +379,9 @@
         //consulta um Paciente pelo CPF
         public Paciente getPacienteByCpf(final String cpf) throws SQLException {
             createConnection();
-            pstGetConsultaById.clearParameters();
+            pstGetPacienteByCpf.clearParameters();
             Paciente paciente = new Paciente();
-            pstGetConsultaById.setString(1, cpf);
+            pstGetPacienteByCpf.setString(1, cpf);
             ResultSet resultSet = pstGetPacienteByCpf.executeQuery();
             while (resultSet.next()) {
                 paciente.setId(resultSet.getInt("id"));
@@ -412,7 +414,7 @@
                 paciente.setNome(resultSet.getString("nome"));
                 paciente.setIdade(resultSet.getInt("idade"));
                 paciente.setCpf(resultSet.getString("cpf"));
-                paciente.setSexo((Character) resultSet.getObject("sexo"));
+                paciente.setSexo(resultSet.getString("sexo").charAt(0));
                 paciente.setRua(resultSet.getString("rua"));
                 paciente.setNumero(resultSet.getString("numero"));
                 paciente.setComplemento(resultSet.getString("complemento"));
@@ -439,7 +441,7 @@
         //atualizar Paciente
         public int updatePaciente(String nome , int idade , char sexo , String cpf , String rua ,
                                   String numero , String complemento, String bairro , String cidade
-                , String estado , String contato , String email, LocalDateTime data_nascimento , final int whereId) throws SQLException {
+                , String estado , String contato , String email, LocalDateTime dataNascimento , final int whereId) throws SQLException {
             createConnection();
             pstupdatePaciente.clearParameters();
             pstupdatePaciente.setString(1, nome);
@@ -454,7 +456,7 @@
             pstupdatePaciente.setString(10, estado);
             pstupdatePaciente.setString(11, contato);
             pstupdatePaciente.setString(12, email);
-            pstupdatePaciente.setTimestamp(13, Timestamp.valueOf(data_nascimento));
+            pstupdatePaciente.setTimestamp(13, Timestamp.valueOf(dataNascimento));
             pstupdatePaciente.setInt(14, whereId);
             return pstupdatePaciente.executeUpdate();
         }
@@ -468,7 +470,7 @@
             while (resultSet.next()) {
                 Consulta consulta = new Consulta();
                 consulta.setId(resultSet.getInt("id"));
-                consulta.setDataHorario(resultSet.getTimestamp("data_horario").toLocalDateTime());
+                consulta.setDataHorario(resultSet.getTimestamp("dataHorario").toLocalDateTime());
                 consulta.setSintomas(resultSet.getString("sintomas"));
                 consulta.seteRetorno(resultSet.getBoolean("e_retorno"));
                 consulta.setEstaAtiva(resultSet.getBoolean("esta_ativa"));
@@ -481,13 +483,12 @@
             return localConsulta;
         }
 
-        public int cadastrarPronturario(Prontuario prontuario) throws SQLException {
+        public int cadastrarProntuario(Prontuario prontuario) throws SQLException {
             createConnection();
             pstinsertProntuario.clearParameters();
             pstinsertProntuario.setString(1 , prontuario.getReceituario());
             pstinsertProntuario.setString(2 , prontuario.getExames());
             pstinsertProntuario.setString(3 , prontuario.getObservacao());
-            pstinsertProntuario.executeQuery();
             return pstinsertProntuario.executeUpdate();
         }
 
