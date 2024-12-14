@@ -33,47 +33,47 @@ public class AtendenteDAOImpl implements AtendenteDAO {
     private String insertNewConsulta = "insert into Consulta(data_horario , sintomas , e_retorno , esta_ativa , paciente_id , prontuario_id ,convenio_id , funcionario_id) values(? , ? , ? , ? , ? , ? , ? ,?)";
     private PreparedStatement pstinsert;
 
-    private String selectAllConsulta = "select * from Consulta";
+    private String selectAllConsulta = "SELECT *FROM Consulta";
     private PreparedStatement pstselectAll;
 
-    private String deleteConsulta = "delete from Consulta where id = ?";
+    private String deleteConsulta = "DELETE FROM Consulta where id = ?";
     private PreparedStatement pstdeleteConsulta;
 
-    private String updateConsulta = "update Consulta set sintomas = ? set e_retorno = ? set esta_ativa set paciente_id = ? set prontuario_id = ? set convenio_id = ? where id = ?";
+    private String updateConsulta = "UPDATE Consulta SET sintomas = ? , eRetorno = ? , estaAtiva = ?, paciente_id = ? , prontuario_id = ? , convenio_id = ? where id = ?";
     private PreparedStatement pstupdateConsulta;
 
-    private String getConsultaById = "select from Consulta where id = ?";
+    private String getConsultaById = "SELECT *FROM Consulta where id = ?";
     private PreparedStatement pstGetConsultaById;
 
     //PACIENTE
     private final String insertNewPaciente = "insert into Paciente (nome , idade , sexo , cpf , rua ,numero ,complemento,bairro , cidade ,estado ,contato , email, dataNascimento) values(? , ? , ? , ? , ? , ?, ? , ?, ? , ?, ? , ? , ? )";
     private PreparedStatement pstInsertPaciente;
 
-    private final String selectAllPacientes = "select * from Paciente";
+    private final String selectAllPacientes = "SELECT *FROM Paciente";
     private PreparedStatement pstselectPacientes;
 
-    private final String deletePaciente = "delete from Paciente where id = ?";
+    private final String deletePaciente = "DELETE FROM Paciente where id = ?";
     private PreparedStatement pstdeletePaciente;
 
-    private final String updatePaciente = "update Paciente set nome = ? set senha = ? set idade set sexo = ? set cpf = ? set rua = ?  set numero = ? set complemento = ? set bairro = ? set cidade = ? set estado = ? set contato = ? set email = ? dataNascimento = ? where id = ?";
+    private final String updatePaciente = "UPDATE Paciente SET nome = ? set senha = ? set idade set sexo = ? set cpf = ? set rua = ?  set numero = ? set complemento = ? set bairro = ? set cidade = ? set estado = ? set contato = ? set email = ? dataNascimento = ? where id = ?";
     private PreparedStatement pstupdatePaciente;
 
-    private final String getPacienteByCpf= "select from Paciente where cpf = ?";
+    private final String getPacienteByCpf= "SELECT *FROM Paciente where cpf = ?";
     private PreparedStatement pstGetPacienteByCpf;
 
     private String insertNewConvenio = "insert into Convenio (nome, descricao) values (?, ?)";
     private PreparedStatement preparedStatementInsertConvenio;
 
-    private String getConvenioById = "select * from Convenio where id = ?";
+    private String getConvenioById = "SELECT *FROM Convenio where id = ?";
     private PreparedStatement preparedStatementGetConvenioById;
 
-    private String deleteConvenioById = "delete from Convenio where id = ?";
+    private String deleteConvenioById = "DELETE FROM Convenio where id = ?";
     private PreparedStatement preparedStatementDeleteConvenio;
 
-    private String listAllConvenios = "select * from Convenio";
+    private String listAllConvenios = "SELECT *FROM Convenio";
     private PreparedStatement preparedStatementListAllConvenios;
 
-    private String updateConvenio = "update Convenio set nome = ?, descricao = ? where id = ?";
+    private String updateConvenio = "UPDATE Convenio SET nome = ?, descricao = ? where id = ?";
     private PreparedStatement preparedStatementUpdateConvenio;
 
 
