@@ -42,6 +42,8 @@ public class App {
             funcionario.setEstado("SP");
             funcionario.setContato("(11) 98765-4321");
             funcionario.setRole(Tipo.ATENDENTE);
+            funcionario.setEspecialidade(new Especialidade(3 , "Cardiologista" , "coração"));
+            funcionario.setPerfil(new Perfil(1, "joao123" , false , false , false ,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false));
             funcionario.setDataNascimento(LocalDateTime.of(1993, 5, 10, 0, 0));
 
             // Testar o cadastro de uma especialidade

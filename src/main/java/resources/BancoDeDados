@@ -108,3 +108,11 @@ CREATE TABLE Perfil (
     deletarProntuario BOOLEAN,
     listarProntuario BOOLEAN
 );
+
+ALTER TABLE Funcionario
+ADD COLUMN id_especialidade INT NULL,
+ADD COLUMN id_perfil INT NOT NULL;
+
+ALTER TABLE Funcionario
+ADD FOREIGN KEY (id_especialidade) REFERENCES Especialidade(id),
+ADD FOREIGN KEY (id_perfil) REFERENCES Perfil(id);
