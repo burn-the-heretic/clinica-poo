@@ -16,7 +16,5 @@ public interface PerfilDAO {
 
     List<Perfil> listAllPerfis() throws SQLException;
 
-    boolean deletePerfil(int id) throws SQLException;
-
-    Perfil mapResultSetToPerfil(ResultSet resultSet);
+    boolean deletarPerfil(int id) throws SQLException;
 }
