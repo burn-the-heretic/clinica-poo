@@ -14,9 +14,6 @@ public class Consulta {
     private Prontuario prontuario;
     private Convenio convenio;
     private Funcionario funcionario;
-    //funcionario
-    //fazer a relação de medico e atendente
-
 
     public Consulta() {
     }

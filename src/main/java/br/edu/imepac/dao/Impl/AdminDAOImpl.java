@@ -30,7 +30,7 @@
         private PreparedStatement preparedStatementInsert;
         private String getFuncionarioById = "SELECT *FROM Funcionario where id=?";
         private PreparedStatement preparedStatementGetFuncionario;
-        private String deleteFuncionarioById = "delete from Funcionario where id=?";
+        private String deleteFuncionarioById = "DELETE FROM Funcionario where id=?";
         private PreparedStatement preparedStatementDeleteFuncionario;
         private String listAllfuncionarios = "SELECT *FROM Funcionario";
         private PreparedStatement preparedStatementListAll;
@@ -44,10 +44,10 @@
         private String selectAllConsulta = "SELECT *FROM Consulta";
         private PreparedStatement pstselectAll;
 
-        private String deleteConsulta = "delete from Consulta where id = ?";
+        private String deleteConsulta = "DELETE FROM Consulta where id = ?";
         private PreparedStatement pstdeleteConsulta;
 
-        private String updateConsulta = "update Consulta set sintomas = ? set e_retorno = ? set esta_ativa set paciente_id = ? set prontuario_id = ? set convenio_id = ? where id = ?";
+        private String updateConsulta = "UPDATE Consulta SET sintomas = ? set e_retorno = ? set esta_ativa set paciente_id = ? set prontuario_id = ? set convenio_id = ? where id = ?";
         private PreparedStatement pstupdateConsulta;
 
         private String getConsultaById = "SELECT *FROM Consulta where id = ?";
@@ -57,13 +57,13 @@
         private final String insertNewPaciente = "insert into Paciente (nome , idade , sexo , cpf , rua ,numero ,complemento,bairro , cidade ,estado ,contato , email, dataNascimento) values(? , ? , ? , ? , ? , ?, ? , ?, ? , ?, ? , ? , ? )";
         private PreparedStatement pstInsertPaciente;
 
-        private final String selectAllPacientes = "select * from Paciente";
+        private final String selectAllPacientes = "SELECT *FROM Paciente";
         private PreparedStatement pstselectPacientes;
 
-        private final String deletePaciente = "delete from Paciente where id = ?";
+        private final String deletePaciente = "DELETE FROM Paciente where id = ?";
         private PreparedStatement pstdeletePaciente;
 
-        private final String updatePaciente = "update Paciente set nome = ? set senha = ? set idade set sexo = ? set cpf = ? set rua = ?  set numero = ? set complemento = ? set bairro = ? set cidade = ? set estado = ? set contato = ? set email = ? dataNascimento = ? where id = ?";
+        private final String updatePaciente = "UPDATE Paciente SET nome = ? set senha = ? set idade set sexo = ? set cpf = ? set rua = ?  set numero = ? set complemento = ? set bairro = ? set cidade = ? set estado = ? set contato = ? set email = ? dataNascimento = ? where id = ?";
         private PreparedStatement pstupdatePaciente;
 
         private final String getPacienteByCpf= "SELECT *FROM Paciente WHERE cpf = ?";
@@ -79,10 +79,10 @@
         private String selectAllProntuarios = "SELECT *FROM Prontuario";
         private PreparedStatement pstselectAllProntuario;
 
-        private String deleteProntuario = "delete from Prontuario where id = ?";
+        private String deleteProntuario = "DELETE FROM Prontuario where id = ?";
         private PreparedStatement pstdelete;
 
-        private String updateProntuario = "update Prontuario set receituario = ? set exames = ? set observacao where id = ?";
+        private String updateProntuario = "UPDATE Prontuario SET receituario = ? set exames = ? set observacao where id = ?";
         private PreparedStatement pstupdate;
 
         private String getProntuarioById = "SELECT *FROM Prontuario where id = ?";
@@ -94,13 +94,13 @@
         private String getConvenioById = "SELECT *FROM Convenio where id = ?";
         private PreparedStatement preparedStatementGetConvenioById;
 
-        private String deleteConvenioById = "delete from Convenio where id = ?";
+        private String deleteConvenioById = "DELETE FROM Convenio where id = ?";
         private PreparedStatement preparedStatementDeleteConvenio;
 
         private String listAllConvenios = "SELECT *FROM Convenio";
         private PreparedStatement preparedStatementListAllConvenios;
 
-        private String updateConvenio = "update Convenio set nome = ?, descricao = ? where id = ?";
+        private String updateConvenio = "UPDATE Convenio SET nome = ?, descricao = ? where id = ?";
         private PreparedStatement preparedStatementUpdateConvenio;
 
         // Comandos SQL para Especialidade
@@ -110,13 +110,13 @@
         private String getEspecialidadeById = "SELECT *FROM Especialidade where id = ?";
         private PreparedStatement preparedStatementGetEspecialidadeById;
 
-        private String deleteEspecialidadeById = "delete from Especialidade where id = ?";
+        private String deleteEspecialidadeById = "DELETE FROM Especialidade where id = ?";
         private PreparedStatement preparedStatementDeleteEspecialidade;
 
         private String listAllEspecialidades = "SELECT *FROM Especialidade";
         private PreparedStatement preparedStatementListAllEspecialidades;
 
-        private String updateEspecialidade = "update Especialidade set nome = ?, descricao = ? where id = ?";
+        private String updateEspecialidade = "UPDATE Especialidade SET nome = ?, descricao = ? where id = ?";
         private PreparedStatement preparedStatementUpdateEspecialidade;
 
 

@@ -11,22 +11,22 @@ import java.util.List;
 
 public class MedicoDAOImpl implements MedicoDAO {
 
-    private String getConsulta = "select *from Consulta where funcionario_id= ?";
+    private String getConsulta = "SELECT *FROM Consulta where funcionario_id= ?";
     private PreparedStatement pstGetConsultasById;
 
     private String insertNewProntuario = "insert into Prontuario(receituario , exames , observacao) values(? , ? , ?)";
     private PreparedStatement pstinsert;
 
-    private String selectAllProntuarios = "select * from Prontuario";
+    private String selectAllProntuarios = "SELECT *FROM Prontuario";
     private PreparedStatement pstselectAll;
 
-    private String deleteProntuario = "delete from Prontuario where id = ?";
+    private String deleteProntuario = "DELETE FROM Prontuario where id = ?";
     private PreparedStatement pstdelete;
 
-    private String updateProntuario = "update Prontuario set receituario = ? set exames = ? set observacao where id = ?";
+    private String updateProntuario = "UPDATE Prontuario SET receituario = ? set exames = ? set observacao where id = ?";
     private PreparedStatement pstupdate;
 
-    private String getProntuarioById = "select from Prontuario where id = ?";
+    private String getProntuarioById = "SELECT *FROM Prontuario where id = ?";
     private PreparedStatement pstGetProntuarioById;
 
     public MedicoDAOImpl(final Connection connection) throws SQLException {
