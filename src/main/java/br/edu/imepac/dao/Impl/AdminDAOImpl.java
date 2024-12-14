@@ -26,7 +26,7 @@
             }
         }
 
-        private String insertNewFuncionario = "insert into Funcionario (usuario ,  email ,senha , idade, sexo , cpf , rua ,numero , complemento , bairro ,cidade , estado , contato ,tipo,dataNascimento) values (? , ? ,? , ? , ?, ? , ? , ?, ? , ? , ?, ? , ? , ?, ?)";
+        private String insertNewFuncionario = "insert into Funcionario (usuario, email, senha, idade, sexo, cpf, rua, numero, complemento, bairro, cidade, estado, contato, tipo, dataNascimento, id_especialidade, id_perfil)  values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         private PreparedStatement preparedStatementInsert;
         private String getFuncionarioById = "SELECT *FROM Funcionario where id=?";
         private PreparedStatement preparedStatementGetFuncionario;
@@ -168,8 +168,8 @@
             createConnection();
             preparedStatementInsert.clearParameters();
             preparedStatementInsert.setString(1, funcionario.getUsuario());
-            preparedStatementInsert.setString(2 , funcionario.getEmail());
-            preparedStatementInsert.setInt(3 , funcionario.getSenha());
+            preparedStatementInsert.setString(2, funcionario.getEmail());
+            preparedStatementInsert.setInt(3, funcionario.getSenha());
             preparedStatementInsert.setInt(4, funcionario.getIdade());
             preparedStatementInsert.setString(5, String.valueOf(funcionario.getSexo()));
             preparedStatementInsert.setString(6, funcionario.getCpf());
@@ -180,8 +180,13 @@
             preparedStatementInsert.setString(11, funcionario.getCidade());
             preparedStatementInsert.setString(12, funcionario.getEstado());
             preparedStatementInsert.setString(13, funcionario.getContato());
-            preparedStatementInsert.setString(14 , String.valueOf(funcionario.getRole()));
-            preparedStatementInsert.setTimestamp(15 , Timestamp.valueOf(funcionario.getDataNascimento()));
+            preparedStatementInsert.setString(14, String.valueOf(funcionario.getRole()));
+            preparedStatementInsert.setTimestamp(15, Timestamp.valueOf(funcionario.getDataNascimento()));
+
+            // Setando o id da especialidade e do perfil
+            preparedStatementInsert.setInt(16, funcionario.getEspecialidade() != null ? funcionario.getEspecialidade().getId() : null);
+            preparedStatementInsert.setInt(17, funcionario.getPerfil().getId());
+
             return preparedStatementInsert.executeUpdate();
         }
 
