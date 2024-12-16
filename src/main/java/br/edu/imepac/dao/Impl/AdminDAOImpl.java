@@ -17,154 +17,155 @@
  */
     public class AdminDAOImpl implements AdminDAO {
 
-        private void createConnection() {
-            try {
-                ConnectionFactory.getConnection(DbConfig.ip , DbConfig.porta,
-                        DbConfig.nomeBanco, DbConfig.usuario,DbConfig.senha);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+    private void createConnection() {
+        try {
+            ConnectionFactory.getConnection(DbConfig.ip, DbConfig.porta,
+                    DbConfig.nomeBanco, DbConfig.usuario, DbConfig.senha);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
+    }
 
-        private String insertNewFuncionario = "insert into Funcionario (usuario, email, senha, idade, sexo, cpf, rua, numero, complemento, bairro, cidade, estado, contato, tipo, dataNascimento, id_especialidade, id_perfil)  values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        private PreparedStatement preparedStatementInsert;
-        private String getFuncionarioById = "SELECT *FROM Funcionario where id=?";
-        private PreparedStatement preparedStatementGetFuncionario;
-        private String deleteFuncionarioById = "DELETE FROM Funcionario where id=?";
-        private PreparedStatement preparedStatementDeleteFuncionario;
-        private String listAllfuncionarios = "SELECT *FROM Funcionario";
-        private PreparedStatement preparedStatementListAll;
-        private String updateFuncionario = "UPDATE Funcionario SET usuario = ?, senha = ?, idade = ?, sexo = ?, cpf = ?, rua = ?, numero = ?, complemento = ?, bairro = ?, cidade = ?, estado = ?, contato = ?, email = ?, dataNascimento = ?, tipo = ? WHERE id = ?";
-        private PreparedStatement preparedStatementUpdateFuncionario;
+    private String insertNewFuncionario = "insert into Funcionario (usuario, email, senha, idade, sexo, cpf, rua, numero, complemento, bairro, cidade, estado, contato, tipo, dataNascimento, id_especialidade, id_perfil)  values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private PreparedStatement preparedStatementInsert;
+    private String getFuncionarioById = "SELECT *FROM Funcionario where id=?";
+    private PreparedStatement preparedStatementGetFuncionario;
+    private String deleteFuncionarioById = "DELETE FROM Funcionario where id=?";
+    private PreparedStatement preparedStatementDeleteFuncionario;
+    private String listAllfuncionarios = "SELECT *FROM Funcionario";
+    private PreparedStatement preparedStatementListAll;
+    private String updateFuncionario = "UPDATE Funcionario SET usuario = ?, senha = ?, idade = ?, sexo = ?, cpf = ?, rua = ?, numero = ?, complemento = ?, bairro = ?, cidade = ?, estado = ?, contato = ?, email = ?, dataNascimento = ?, tipo = ? WHERE id = ?";
+    private PreparedStatement preparedStatementUpdateFuncionario;
 
-        //CONSULTA
-        private String insertNewConsulta = "insert into Consulta(dataHorario , sintomas , eRetorno , estaAtiva , id_paciente , id_funcionario , id_prontuario ,id_convenio) values(? , ? , ? , ? , ? , ? , ? ,?)";
-        private PreparedStatement pstinsert;
+    //CONSULTA
+    private String insertNewConsulta = "insert into Consulta(dataHorario , sintomas , eRetorno , estaAtiva , id_paciente , id_funcionario , id_prontuario ,id_convenio) values(? , ? , ? , ? , ? , ? , ? ,?)";
+    private PreparedStatement pstinsert;
 
-        private String selectAllConsulta = "SELECT *FROM Consulta";
-        private PreparedStatement pstselectAll;
+    private String selectAllConsulta = "SELECT *FROM Consulta";
+    private PreparedStatement pstselectAll;
 
-        private String deleteConsulta = "DELETE FROM Consulta where id = ?";
-        private PreparedStatement pstdeleteConsulta;
+    private String deleteConsulta = "DELETE FROM Consulta where id = ?";
+    private PreparedStatement pstdeleteConsulta;
 
-        private String updateConsulta = "UPDATE Consulta SET sintomas = ? set e_retorno = ? set esta_ativa set paciente_id = ? set prontuario_id = ? set convenio_id = ? where id = ?";
-        private PreparedStatement pstupdateConsulta;
+    private String updateConsulta = "UPDATE Consulta SET sintomas = ? set e_retorno = ? set esta_ativa set paciente_id = ? set prontuario_id = ? set convenio_id = ? where id = ?";
+    private PreparedStatement pstupdateConsulta;
 
-        private String getConsultaById = "SELECT *FROM Consulta where id = ?";
-        private PreparedStatement pstGetConsultaById;
+    private String getConsultaById = "SELECT *FROM Consulta where id = ?";
+    private PreparedStatement pstGetConsultaById;
+
+    //PACIENTE
+    private final String insertNewPaciente = "insert into Paciente (nome , idade , sexo , cpf , rua ,numero ,complemento,bairro , cidade ,estado ,contato , email, dataNascimento) values(? , ? , ? , ? , ? , ?, ? , ?, ? , ?, ? , ? , ? )";
+    private PreparedStatement pstInsertPaciente;
+
+    private final String selectAllPacientes = "SELECT *FROM Paciente";
+    private PreparedStatement pstselectPacientes;
+
+    private final String deletePaciente = "DELETE FROM Paciente where id = ?";
+    private PreparedStatement pstdeletePaciente;
+
+    private final String updatePaciente = "UPDATE Paciente SET nome = ? set senha = ? set idade set sexo = ? set cpf = ? set rua = ?  set numero = ? set complemento = ? set bairro = ? set cidade = ? set estado = ? set contato = ? set email = ? dataNascimento = ? where id = ?";
+    private PreparedStatement pstupdatePaciente;
+
+    private final String getPacienteByCpf = "SELECT *FROM Paciente WHERE cpf = ?";
+    private PreparedStatement pstGetPacienteByCpf;
+
+
+    private String getConsulta = "SELECT *FROM Consulta where funcionario_id= ?";
+    private PreparedStatement pstGetConsultasById;
+
+    private String insertNewProntuario = "insert into Prontuario(receituario , exames , observacao) values (? , ? , ?)";
+    private PreparedStatement pstinsertProntuario;
+
+    private String selectAllProntuarios = "SELECT *FROM Prontuario";
+    private PreparedStatement pstselectAllProntuario;
+
+    private String deleteProntuario = "DELETE FROM Prontuario where id = ?";
+    private PreparedStatement pstdelete;
+
+    private String updateProntuario = "UPDATE Prontuario SET receituario = ? set exames = ? set observacao where id = ?";
+    private PreparedStatement pstupdate;
+
+    private String getProntuarioById = "SELECT *FROM Prontuario where id = ?";
+    private PreparedStatement pstGetProntuarioById;
+
+    private String insertNewConvenio = "insert into Convenio (nome, descricao) values (?, ?)";
+    private PreparedStatement preparedStatementInsertConvenio;
+
+    private String getConvenioById = "SELECT *FROM Convenio where id = ?";
+    private PreparedStatement preparedStatementGetConvenioById;
+
+    private String deleteConvenioById = "DELETE FROM Convenio where id = ?";
+    private PreparedStatement preparedStatementDeleteConvenio;
+
+    private String listAllConvenios = "SELECT *FROM Convenio";
+    private PreparedStatement preparedStatementListAllConvenios;
+
+    private String updateConvenio = "UPDATE Convenio SET nome = ?, descricao = ? where id = ?";
+    private PreparedStatement preparedStatementUpdateConvenio;
+
+    // Comandos SQL para Especialidade
+    private String insertNewEspecialidade = "insert into Especialidade (nome, descricao) values (?, ?)";
+    private PreparedStatement preparedStatementInsertEspecialidade;
+
+    private String getEspecialidadeById = "SELECT *FROM Especialidade where id = ?";
+    private PreparedStatement preparedStatementGetEspecialidadeById;
+
+    private String deleteEspecialidadeById = "DELETE FROM Especialidade where id = ?";
+    private PreparedStatement preparedStatementDeleteEspecialidade;
+
+    private String listAllEspecialidades = "SELECT *FROM Especialidade";
+    private PreparedStatement preparedStatementListAllEspecialidades;
+
+    private String updateEspecialidade = "UPDATE Especialidade SET nome = ?, descricao = ? where id = ?";
+    private PreparedStatement preparedStatementUpdateEspecialidade;
+
+
+    public AdminDAOImpl(final Connection connection) throws SQLException {
+        preparedStatementInsert = connection.prepareStatement(insertNewFuncionario);
+        preparedStatementGetFuncionario = connection.prepareStatement(getFuncionarioById);
+        preparedStatementDeleteFuncionario = connection.prepareStatement(deleteFuncionarioById);
+        preparedStatementListAll = connection.prepareStatement(listAllfuncionarios);
+        preparedStatementUpdateFuncionario = connection.prepareStatement(updateFuncionario);
+        pstinsert = connection.prepareStatement(insertNewConsulta);
+        pstselectAll = connection.prepareStatement(selectAllConsulta);
+        pstdeleteConsulta = connection.prepareStatement(deleteConsulta);
+        pstupdateConsulta = connection.prepareStatement(updateConsulta);
+        pstGetConsultaById = connection.prepareStatement(getConsultaById);
 
         //PACIENTE
-        private final String insertNewPaciente = "insert into Paciente (nome , idade , sexo , cpf , rua ,numero ,complemento,bairro , cidade ,estado ,contato , email, dataNascimento) values(? , ? , ? , ? , ? , ?, ? , ?, ? , ?, ? , ? , ? )";
-        private PreparedStatement pstInsertPaciente;
+        pstInsertPaciente = connection.prepareStatement(insertNewPaciente);
+        pstselectPacientes = connection.prepareStatement(selectAllPacientes);
+        pstdeletePaciente = connection.prepareStatement(deletePaciente);
+        pstupdatePaciente = connection.prepareStatement(updatePaciente);
+        pstGetPacienteByCpf = connection.prepareStatement(getPacienteByCpf);
 
-        private final String selectAllPacientes = "SELECT *FROM Paciente";
-        private PreparedStatement pstselectPacientes;
+        //MEDICO
+        pstGetConsultasById = connection.prepareStatement(getConsulta);
+        pstinsertProntuario = connection.prepareStatement(insertNewProntuario);
+        pstselectAllProntuario = connection.prepareStatement(selectAllProntuarios);
+        pstdelete = connection.prepareStatement(deleteProntuario);
+        pstupdate = connection.prepareStatement(updateProntuario);
+        pstGetProntuarioById = connection.prepareStatement(getProntuarioById);
 
-        private final String deletePaciente = "DELETE FROM Paciente where id = ?";
-        private PreparedStatement pstdeletePaciente;
+        //CONVENIO
+        preparedStatementInsertConvenio = connection.prepareStatement(insertNewConvenio);
+        preparedStatementGetConvenioById = connection.prepareStatement(getConvenioById);
+        preparedStatementDeleteConvenio = connection.prepareStatement(deleteConvenioById);
+        preparedStatementListAllConvenios = connection.prepareStatement(listAllConvenios);
+        preparedStatementUpdateConvenio = connection.prepareStatement(updateConvenio);
 
-        private final String updatePaciente = "UPDATE Paciente SET nome = ? set senha = ? set idade set sexo = ? set cpf = ? set rua = ?  set numero = ? set complemento = ? set bairro = ? set cidade = ? set estado = ? set contato = ? set email = ? dataNascimento = ? where id = ?";
-        private PreparedStatement pstupdatePaciente;
+        //ESPECIALIDADE
+        preparedStatementInsertEspecialidade = connection.prepareStatement(insertNewEspecialidade);
+        preparedStatementGetEspecialidadeById = connection.prepareStatement(getEspecialidadeById);
+        preparedStatementDeleteEspecialidade = connection.prepareStatement(deleteEspecialidadeById);
+        preparedStatementListAllEspecialidades = connection.prepareStatement(listAllEspecialidades);
+        preparedStatementUpdateEspecialidade = connection.prepareStatement(updateEspecialidade);
 
-        private final String getPacienteByCpf= "SELECT *FROM Paciente WHERE cpf = ?";
-        private PreparedStatement pstGetPacienteByCpf;
+    }
 
-
-        private String getConsulta = "SELECT *FROM Consulta where funcionario_id= ?";
-        private PreparedStatement pstGetConsultasById;
-
-        private String insertNewProntuario = "insert into Prontuario(receituario , exames , observacao) values (? , ? , ?)";
-        private PreparedStatement pstinsertProntuario;
-
-        private String selectAllProntuarios = "SELECT *FROM Prontuario";
-        private PreparedStatement pstselectAllProntuario;
-
-        private String deleteProntuario = "DELETE FROM Prontuario where id = ?";
-        private PreparedStatement pstdelete;
-
-        private String updateProntuario = "UPDATE Prontuario SET receituario = ? set exames = ? set observacao where id = ?";
-        private PreparedStatement pstupdate;
-
-        private String getProntuarioById = "SELECT *FROM Prontuario where id = ?";
-        private PreparedStatement pstGetProntuarioById;
-
-        private String insertNewConvenio = "insert into Convenio (nome, descricao) values (?, ?)";
-        private PreparedStatement preparedStatementInsertConvenio;
-
-        private String getConvenioById = "SELECT *FROM Convenio where id = ?";
-        private PreparedStatement preparedStatementGetConvenioById;
-
-        private String deleteConvenioById = "DELETE FROM Convenio where id = ?";
-        private PreparedStatement preparedStatementDeleteConvenio;
-
-        private String listAllConvenios = "SELECT *FROM Convenio";
-        private PreparedStatement preparedStatementListAllConvenios;
-
-        private String updateConvenio = "UPDATE Convenio SET nome = ?, descricao = ? where id = ?";
-        private PreparedStatement preparedStatementUpdateConvenio;
-
-        // Comandos SQL para Especialidade
-        private String insertNewEspecialidade = "insert into Especialidade (nome, descricao) values (?, ?)";
-        private PreparedStatement preparedStatementInsertEspecialidade;
-
-        private String getEspecialidadeById = "SELECT *FROM Especialidade where id = ?";
-        private PreparedStatement preparedStatementGetEspecialidadeById;
-
-        private String deleteEspecialidadeById = "DELETE FROM Especialidade where id = ?";
-        private PreparedStatement preparedStatementDeleteEspecialidade;
-
-        private String listAllEspecialidades = "SELECT *FROM Especialidade";
-        private PreparedStatement preparedStatementListAllEspecialidades;
-
-        private String updateEspecialidade = "UPDATE Especialidade SET nome = ?, descricao = ? where id = ?";
-        private PreparedStatement preparedStatementUpdateEspecialidade;
-
-
-        public AdminDAOImpl(final Connection connection) throws SQLException {
-            preparedStatementInsert = connection.prepareStatement(insertNewFuncionario);
-            preparedStatementGetFuncionario = connection.prepareStatement(getFuncionarioById);
-            preparedStatementDeleteFuncionario = connection.prepareStatement(deleteFuncionarioById);
-            preparedStatementListAll = connection.prepareStatement(listAllfuncionarios);
-            preparedStatementUpdateFuncionario = connection.prepareStatement(updateFuncionario);
-            pstinsert = connection.prepareStatement(insertNewConsulta);
-            pstselectAll = connection.prepareStatement(selectAllConsulta);
-            pstdeleteConsulta = connection.prepareStatement(deleteConsulta);
-            pstupdateConsulta = connection.prepareStatement(updateConsulta);
-            pstGetConsultaById = connection.prepareStatement(getConsultaById);
-
-            //PACIENTE
-            pstInsertPaciente = connection.prepareStatement(insertNewPaciente);
-            pstselectPacientes = connection.prepareStatement(selectAllPacientes);
-            pstdeletePaciente = connection.prepareStatement(deletePaciente);
-            pstupdatePaciente = connection.prepareStatement(updatePaciente);
-            pstGetPacienteByCpf = connection.prepareStatement(getPacienteByCpf);
-
-            //MEDICO
-            pstGetConsultasById = connection.prepareStatement(getConsulta);
-            pstinsertProntuario = connection.prepareStatement(insertNewProntuario);
-            pstselectAllProntuario = connection.prepareStatement(selectAllProntuarios);
-            pstdelete = connection.prepareStatement(deleteProntuario);
-            pstupdate = connection.prepareStatement(updateProntuario);
-            pstGetProntuarioById = connection.prepareStatement(getProntuarioById);
-
-            //CONVENIO
-            preparedStatementInsertConvenio = connection.prepareStatement(insertNewConvenio);
-            preparedStatementGetConvenioById = connection.prepareStatement(getConvenioById);
-            preparedStatementDeleteConvenio = connection.prepareStatement(deleteConvenioById);
-            preparedStatementListAllConvenios = connection.prepareStatement(listAllConvenios);
-            preparedStatementUpdateConvenio = connection.prepareStatement(updateConvenio);
-
-            //ESPECIALIDADE
-            preparedStatementInsertEspecialidade = connection.prepareStatement(insertNewEspecialidade);
-            preparedStatementGetEspecialidadeById = connection.prepareStatement(getEspecialidadeById);
-            preparedStatementDeleteEspecialidade = connection.prepareStatement(deleteEspecialidadeById);
-            preparedStatementListAllEspecialidades = connection.prepareStatement(listAllEspecialidades);
-            preparedStatementUpdateEspecialidade = connection.prepareStatement(updateEspecialidade);
-
-        }
-
-        //cadastrar o funcionario
-        public int cadastrarFuncionario(Funcionario funcionario) throws SQLException {
+    //cadastrar o funcionario
+    public int cadastrarFuncionario(Funcionario funcionario) {
+        try {
             createConnection();
             preparedStatementInsert.clearParameters();
             preparedStatementInsert.setString(1, funcionario.getUsuario());
@@ -184,55 +185,66 @@
             preparedStatementInsert.setTimestamp(15, Timestamp.valueOf(funcionario.getDataNascimento()));
 
             // Setando o id da especialidade e do perfil
-            preparedStatementInsert.setInt(16, funcionario.getEspecialidade() != null ? funcionario.getEspecialidade().getId() : null);
-            preparedStatementInsert.setInt(17, funcionario.getPerfil().getId());
+            preparedStatementInsert.setInt(16, funcionario.getEspecialidade() != null ? funcionario.getEspecialidade().getId() : 0);  // Definindo valor 0 para caso de especialidade nula
+            preparedStatementInsert.setInt(17, funcionario.getPerfil() != null ? funcionario.getPerfil().getId() : 0);  // Definindo valor 0 para caso de perfil nulo
 
             return preparedStatementInsert.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Erro ao cadastrar o funcionário: " + e.getMessage());
+            throw new RuntimeException("Erro ao cadastrar o funcionário no banco de dados.", e);
         }
+    }
 
-        //pegar o funcionario pela id
-        public Funcionario getFuncionarioById(final int id) throws SQLException {
-             createConnection();
-             preparedStatementGetFuncionario.clearParameters();
-             Funcionario funcionario = new Funcionario();
-             preparedStatementGetFuncionario.setInt(1, id);
-             ResultSet resultSet = preparedStatementGetFuncionario.executeQuery();
-             while (resultSet.next()) {
-                 funcionario.setId(resultSet.getInt("id"));
-                 funcionario.setUsuario(resultSet.getString("usuario"));
-                 funcionario.setEmail(resultSet.getString("email"));
-                 funcionario.setSenha(resultSet.getInt("senha"));
-                 funcionario.setIdade(resultSet.getInt("idade"));
-                 funcionario.setRole(Tipo.valueOf(resultSet.getString("tipo")));
-                 funcionario.setSexo(resultSet.getString("sexo").charAt(0));
-                 funcionario.setCpf(resultSet.getString("cpf"));
-                 funcionario.setRua(resultSet.getString("rua"));
-                 funcionario.setNumero(resultSet.getString("numero"));
-                 funcionario.setComplemento(resultSet.getString("complemento"));
-                 funcionario.setBairro(resultSet.getString("bairro"));
-                 funcionario.setCidade(resultSet.getString("cidade"));
-                 funcionario.setEstado(resultSet.getString("estado"));
-                 funcionario.setContato(resultSet.getString("contato"));
-                 funcionario.setDataNascimento(resultSet.getTimestamp("dataNascimento").toLocalDateTime());
-//                 funcionario.setPerfil(resultSet.getObject("perfil", Perfil.class));
-//                 funcionario.setEspecialidade(resultSet.getObject("especialidade", Especialidade.class));
-             }
-             return funcionario;
+    public Funcionario getFuncionarioById(final int id) {
+        try {
+            createConnection();
+            preparedStatementGetFuncionario.clearParameters();
+            Funcionario funcionario = new Funcionario();
+            preparedStatementGetFuncionario.setInt(1, id);
+            ResultSet resultSet = preparedStatementGetFuncionario.executeQuery();
+            while (resultSet.next()) {
+                funcionario.setId(resultSet.getInt("id"));
+                funcionario.setUsuario(resultSet.getString("usuario"));
+                funcionario.setEmail(resultSet.getString("email"));
+                funcionario.setSenha(resultSet.getInt("senha"));
+                funcionario.setIdade(resultSet.getInt("idade"));
+                funcionario.setRole(Tipo.valueOf(resultSet.getString("tipo")));
+                funcionario.setSexo(resultSet.getString("sexo").charAt(0));
+                funcionario.setCpf(resultSet.getString("cpf"));
+                funcionario.setRua(resultSet.getString("rua"));
+                funcionario.setNumero(resultSet.getString("numero"));
+                funcionario.setComplemento(resultSet.getString("complemento"));
+                funcionario.setBairro(resultSet.getString("bairro"));
+                funcionario.setCidade(resultSet.getString("cidade"));
+                funcionario.setEstado(resultSet.getString("estado"));
+                funcionario.setContato(resultSet.getString("contato"));
+                funcionario.setDataNascimento(resultSet.getTimestamp("dataNascimento").toLocalDateTime());
+            }
+            return funcionario;
+        } catch (SQLException e) {
+            System.err.println("Erro ao obter o funcionário com id " + id + ": " + e.getMessage());
+            throw new RuntimeException("Erro ao consultar o banco de dados para obter o funcionário.", e);
         }
+    }
 
-        //deleta o funcionario pelo id
-        public int deleteFuncionarioById(final int id) throws SQLException {
+    // Deleta o funcionario pelo id
+    public int deleteFuncionarioById(final int id) {
+        try {
             createConnection();
             preparedStatementDeleteFuncionario.clearParameters();
             preparedStatementDeleteFuncionario.setInt(1, id);
             return preparedStatementDeleteFuncionario.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Erro ao deletar o funcionário com id " + id + ": " + e.getMessage());
+            throw new RuntimeException("Erro ao deletar o funcionário no banco de dados.", e);
         }
+    }
 
-        //listar todos os funcionarios
-        public List<Funcionario> listAllFuncionarios() throws SQLException {
+    // Listar todos os funcionários
+    public List<Funcionario> listAllFuncionarios() {
+        try {
             createConnection();
             List<Funcionario> localList = new ArrayList<>();
-
             ResultSet result = preparedStatementListAll.executeQuery();
             while (result.next()) {
                 Funcionario funcionario = new Funcionario();
@@ -245,43 +257,55 @@
                 funcionario.setCidade(result.getString("cidade"));
                 funcionario.setEstado(result.getString("estado"));
                 funcionario.setContato(result.getString("contato"));
-                funcionario.setSexo(result.getString("sexo").charAt(0)); // Assume-se que o sexo é armazenado como 'M' ou 'F'
+                funcionario.setSexo(result.getString("sexo").charAt(0));
                 funcionario.setCpf(result.getString("cpf"));
                 funcionario.setRua(result.getString("rua"));
                 funcionario.setNumero(result.getString("numero"));
                 funcionario.setComplemento(result.getString("complemento"));
-                funcionario.setDataNascimento(result.getTimestamp("dataNascimento").toLocalDateTime()); // Caso esteja armazenado como DATETIME
+                funcionario.setDataNascimento(result.getTimestamp("dataNascimento").toLocalDateTime());
                 funcionario.setRole(Tipo.valueOf(result.getString("tipo")));
                 localList.add(funcionario);
             }
             return localList;
+        } catch (SQLException e) {
+            System.err.println("Erro ao listar os funcionários: " + e.getMessage());
+            throw new RuntimeException("Erro ao listar os funcionários no banco de dados.", e);
         }
+    }
 
-        public int updateFuncionario(String usuario , int idade , char sexo , String cpf , String rua ,
-                                  String numero , String complemento, String bairro , String cidade
-                , String estado , String contato , String email,int senha ,LocalDateTime dataNnascimento ,Tipo tipo, final int whereId) throws SQLException {
-             createConnection();
-             preparedStatementUpdateFuncionario.clearParameters();
-             preparedStatementUpdateFuncionario.setString(1, usuario);
-             preparedStatementUpdateFuncionario.setInt(2, senha);
-             preparedStatementUpdateFuncionario.setInt(3, idade);
+    // Atualizar funcionário
+    public int updateFuncionario(String usuario, int idade, char sexo, String cpf, String rua,
+                                 String numero, String complemento, String bairro, String cidade,
+                                 String estado, String contato, String email, int senha, LocalDateTime dataNnascimento, Tipo tipo, final int whereId) {
+        try {
+            createConnection();
+            preparedStatementUpdateFuncionario.clearParameters();
+            preparedStatementUpdateFuncionario.setString(1, usuario);
+            preparedStatementUpdateFuncionario.setInt(2, senha);
+            preparedStatementUpdateFuncionario.setInt(3, idade);
             preparedStatementUpdateFuncionario.setString(4, String.valueOf(sexo));
-             preparedStatementUpdateFuncionario.setString(5, cpf);
-             preparedStatementUpdateFuncionario.setString(6, rua);
-             preparedStatementUpdateFuncionario.setString(7, numero);
-             preparedStatementUpdateFuncionario.setString(8, complemento);
-             preparedStatementUpdateFuncionario.setString(9, bairro);
-             preparedStatementUpdateFuncionario.setString(10, cidade);
-             preparedStatementUpdateFuncionario.setString(11, estado);
-             preparedStatementUpdateFuncionario.setString(12, contato);
-             preparedStatementUpdateFuncionario.setString(13, email);
-             preparedStatementUpdateFuncionario.setTimestamp(14 , Timestamp.valueOf(dataNnascimento));
-             preparedStatementUpdateFuncionario.setString(15 , String.valueOf(tipo));
-             preparedStatementUpdateFuncionario.setInt(16 , whereId);
-             return preparedStatementUpdateFuncionario.executeUpdate();
-          }
-        //cadastra uma consulta
-        public void cadastrarConsulta(final Consulta consulta) throws SQLException {
+            preparedStatementUpdateFuncionario.setString(5, cpf);
+            preparedStatementUpdateFuncionario.setString(6, rua);
+            preparedStatementUpdateFuncionario.setString(7, numero);
+            preparedStatementUpdateFuncionario.setString(8, complemento);
+            preparedStatementUpdateFuncionario.setString(9, bairro);
+            preparedStatementUpdateFuncionario.setString(10, cidade);
+            preparedStatementUpdateFuncionario.setString(11, estado);
+            preparedStatementUpdateFuncionario.setString(12, contato);
+            preparedStatementUpdateFuncionario.setString(13, email);
+            preparedStatementUpdateFuncionario.setTimestamp(14, Timestamp.valueOf(dataNnascimento));
+            preparedStatementUpdateFuncionario.setString(15, String.valueOf(tipo));
+            preparedStatementUpdateFuncionario.setInt(16, whereId);
+            return preparedStatementUpdateFuncionario.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Erro ao atualizar o funcionário com id " + whereId + ": " + e.getMessage());
+            throw new RuntimeException("Erro ao atualizar os dados do funcionário no banco de dados.", e);
+        }
+    }
+
+    // Cadastrar uma consulta
+    public void cadastrarConsulta(final Consulta consulta) {
+        try {
             createConnection();
             pstinsert.clearParameters();
             pstinsert.setTimestamp(1, Timestamp.valueOf(consulta.getDataHorario()));
@@ -293,10 +317,15 @@
             pstinsert.setInt(7, consulta.getProntuario().getId());
             pstinsert.setInt(8, consulta.getConvenio().getId());
             pstinsert.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Erro ao cadastrar consulta: " + e.getMessage());
+            throw new RuntimeException("Erro ao cadastrar consulta no banco de dados.", e);
         }
+    }
 
-        //consulta pelo id
-        public Consulta getConsultaById(final int id) throws SQLException {
+    // Consulta pelo id
+    public Consulta getConsultaById(final int id) {
+        try {
             createConnection();
             pstGetConsultaById.clearParameters();
             Consulta consulta = new Consulta();
@@ -314,13 +343,17 @@
                 consulta.setFuncionario((Funcionario) resultSet.getObject("funcionario_id"));
             }
             return consulta;
+        } catch (SQLException e) {
+            System.err.println("Erro ao obter consulta com id " + id + ": " + e.getMessage());
+            throw new RuntimeException("Erro ao consultar a consulta no banco de dados.", e);
         }
+    }
 
-        //lista todas as consultas
-        public List<Consulta> listAllConsultas() throws SQLException {
+    // Lista todas as consultas
+    public List<Consulta> listAllConsultas() {
+        try {
             createConnection();
             List<Consulta> localConsulta = new ArrayList<>();
-
             ResultSet result = pstselectAll.executeQuery();
             while (result.next()) {
                 Consulta consulta = new Consulta();
@@ -336,19 +369,29 @@
                 localConsulta.add(consulta);
             }
             return localConsulta;
+        } catch (SQLException e) {
+            System.err.println("Erro ao listar as consultas: " + e.getMessage());
+            throw new RuntimeException("Erro ao listar as consultas no banco de dados.", e);
         }
+    }
 
-        //deletar consulta
-        public void deleteConsulta(final int id) throws SQLException {
+    // Deletar consulta
+    public void deleteConsulta(final int id) {
+        try {
             createConnection();
             pstdeleteConsulta.clearParameters();
             pstdeleteConsulta.setInt(1, id);
             pstdeleteConsulta.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Erro ao deletar consulta com id " + id + ": " + e.getMessage());
+            throw new RuntimeException("Erro ao deletar a consulta no banco de dados.", e);
         }
+    }
 
-        //atualizar consulta
-        public int updateConsulta(final String sintomas , final boolean eRetorno, final boolean estaAtiva, final int pacienteId
-                , final int prontuarioId ,final int convenioId , final int whereId) throws SQLException {
+    // Atualizar consulta
+    public int updateConsulta(final String sintomas, final boolean eRetorno, final boolean estaAtiva, final int pacienteId,
+                              final int prontuarioId, final int convenioId, final int whereId) {
+        try {
             createConnection();
             pstupdateConsulta.clearParameters();
             pstupdateConsulta.setString(1, sintomas);
@@ -359,15 +402,20 @@
             pstupdateConsulta.setInt(6, convenioId);
             pstupdateConsulta.setInt(7, whereId);
             return pstupdateConsulta.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Erro ao atualizar consulta com id " + whereId + ": " + e.getMessage());
+            throw new RuntimeException("Erro ao atualizar a consulta no banco de dados.", e);
         }
+    }
 
-        //cadastra um Paciente
-        public int cadastrarPaciente(final Paciente paciente) throws SQLException {
+    //cadastra um Paciente
+    public int cadastrarPaciente(final Paciente paciente) {
+        try {
             createConnection();
             pstInsertPaciente.clearParameters();
-            pstInsertPaciente.setString(1 , paciente.getNome() );
-            pstInsertPaciente.setInt(2 , paciente.getIdade());
-            pstInsertPaciente.setString(3 , String.valueOf(paciente.getSexo()));
+            pstInsertPaciente.setString(1, paciente.getNome());
+            pstInsertPaciente.setInt(2, paciente.getIdade());
+            pstInsertPaciente.setString(3, String.valueOf(paciente.getSexo()));
             pstInsertPaciente.setString(4, paciente.getCpf());
             pstInsertPaciente.setString(5, paciente.getRua());
             pstInsertPaciente.setString(6, paciente.getNumero());
@@ -379,10 +427,15 @@
             pstInsertPaciente.setString(12, paciente.getEmail());
             pstInsertPaciente.setTimestamp(13, Timestamp.valueOf(paciente.getDataNascimento()));
             return pstInsertPaciente.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Erro ao cadastrar paciente: " + e.getMessage());
+            throw new RuntimeException("Erro ao cadastrar paciente", e);
         }
+    }
 
-        //consulta um Paciente pelo CPF
-        public Paciente getPacienteByCpf(final String cpf) throws SQLException {
+    // Consulta um Paciente pelo CPF
+    public Paciente getPacienteByCpf(final String cpf) {
+        try {
             createConnection();
             pstGetPacienteByCpf.clearParameters();
             Paciente paciente = new Paciente();
@@ -405,13 +458,17 @@
                 paciente.setDataNascimento(resultSet.getTimestamp("dataNascimento").toLocalDateTime());
             }
             return paciente;
+        } catch (SQLException e) {
+            System.err.println("Erro ao consultar paciente por CPF: " + e.getMessage());
+            throw new RuntimeException("Erro ao consultar paciente", e);
         }
+    }
 
-        //lista todas os Pacientes
-        public List<Paciente> listAllPacientes() throws SQLException {
+    // Lista todos os pacientes
+    public List<Paciente> listAllPacientes() {
+        try {
             createConnection();
             List<Paciente> localPaciente = new ArrayList<>();
-
             ResultSet resultSet = pstselectPacientes.executeQuery();
             while (resultSet.next()) {
                 Paciente paciente = new Paciente();
@@ -432,21 +489,29 @@
                 localPaciente.add(paciente);
             }
             return localPaciente;
+        } catch (SQLException e) {
+            System.err.println("Erro ao listar pacientes: " + e.getMessage());
+            throw new RuntimeException("Erro ao listar pacientes", e);
         }
+    }
 
-        //deletar informaçoes de Paciente
-        //por enquanto deleta o paciente
-        public int deletePaciente(final String cpf) throws SQLException {
+    // Deletar informações de paciente
+    public int deletePaciente(final String cpf) {
+        try {
             createConnection();
             pstdeletePaciente.clearParameters();
             pstdeletePaciente.setString(1, cpf);
             return pstdeletePaciente.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Erro ao deletar paciente: " + e.getMessage());
+            throw new RuntimeException("Erro ao deletar paciente", e);
         }
+    }
 
-        //atualizar Paciente
-        public int updatePaciente(String nome , int idade , char sexo , String cpf , String rua ,
-                                  String numero , String complemento, String bairro , String cidade
-                , String estado , String contato , String email, LocalDateTime dataNascimento , final int whereId) throws SQLException {
+    // Atualizar Paciente
+    public int updatePaciente(String nome, int idade, char sexo, String cpf, String rua, String numero, String complemento,
+                              String bairro, String cidade, String estado, String contato, String email, LocalDateTime dataNascimento, final int whereId) {
+        try {
             createConnection();
             pstupdatePaciente.clearParameters();
             pstupdatePaciente.setString(1, nome);
@@ -464,13 +529,19 @@
             pstupdatePaciente.setTimestamp(13, Timestamp.valueOf(dataNascimento));
             pstupdatePaciente.setInt(14, whereId);
             return pstupdatePaciente.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Erro ao atualizar paciente: " + e.getMessage());
+            throw new RuntimeException("Erro ao atualizar paciente", e);
         }
+    }
 
-        public List<Consulta> listMyConsultas(int medicoId) throws SQLException {
+    // Listar Consultas de um médico
+    public List<Consulta> listMyConsultas(int medicoId) {
+        try {
             createConnection();
             pstGetConsultasById.clearParameters();
             List<Consulta> localConsulta = new ArrayList<>();
-            pstGetConsultasById.setInt(1 , medicoId);
+            pstGetConsultasById.setInt(1, medicoId);
             ResultSet resultSet = pstGetConsultasById.executeQuery();
             while (resultSet.next()) {
                 Consulta consulta = new Consulta();
@@ -486,22 +557,34 @@
                 localConsulta.add(consulta);
             }
             return localConsulta;
+        } catch (SQLException e) {
+            System.err.println("Erro ao listar consultas: " + e.getMessage());
+            throw new RuntimeException("Erro ao listar consultas", e);
         }
+    }
 
-        public int cadastrarProntuario(Prontuario prontuario) throws SQLException {
+    // Cadastrar prontuário
+    public int cadastrarProntuario(Prontuario prontuario) {
+        try {
             createConnection();
             pstinsertProntuario.clearParameters();
-            pstinsertProntuario.setString(1 , prontuario.getReceituario());
-            pstinsertProntuario.setString(2 , prontuario.getExames());
-            pstinsertProntuario.setString(3 , prontuario.getObservacao());
+            pstinsertProntuario.setString(1, prontuario.getReceituario());
+            pstinsertProntuario.setString(2, prontuario.getExames());
+            pstinsertProntuario.setString(3, prontuario.getObservacao());
             return pstinsertProntuario.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Erro ao cadastrar prontuário: " + e.getMessage());
+            throw new RuntimeException("Erro ao cadastrar prontuário", e);
         }
+    }
 
-        public Prontuario getProntuarioById(int id) throws SQLException {
+    // Consultar prontuário por ID
+    public Prontuario getProntuarioById(int id) {
+        try {
             createConnection();
             pstGetProntuarioById.clearParameters();
             Prontuario prontuario = new Prontuario();
-            pstGetProntuarioById.setInt(1 , id);
+            pstGetProntuarioById.setInt(1, id);
             ResultSet resultSet = pstGetProntuarioById.executeQuery();
             while (resultSet.next()) {
                 prontuario.setId(resultSet.getInt("id"));
@@ -510,12 +593,17 @@
                 prontuario.setObservacao(resultSet.getString("observacao"));
             }
             return prontuario;
+        } catch (SQLException e) {
+            System.err.println("Erro ao consultar prontuário: " + e.getMessage());
+            throw new RuntimeException("Erro ao consultar prontuário", e);
         }
+    }
 
-        public List<Prontuario> listAllProntuarios() throws SQLException {
+    // Listar todos os prontuários
+    public List<Prontuario> listAllProntuarios() {
+        try {
             createConnection();
             List<Prontuario> localProntuario = new ArrayList<>();
-
             ResultSet resultSet = pstselectAllProntuario.executeQuery();
             while (resultSet.next()) {
                 Prontuario prontuario = new Prontuario();
@@ -526,33 +614,58 @@
                 localProntuario.add(prontuario);
             }
             return localProntuario;
+        } catch (SQLException e) {
+            System.err.println("Erro ao listar prontuários: " + e.getMessage());
+            throw new RuntimeException("Erro ao listar prontuários", e);
         }
+    }
 
-        public int deleteProntuario(int id) throws SQLException {
+    // Deletar prontuário
+    public int deleteProntuario(int id) {
+        try {
             createConnection();
             pstdelete.clearParameters();
             pstdelete.setInt(1, id);
             return pstdelete.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Erro ao deletar prontuário: " + e.getMessage());
+            throw new RuntimeException("Erro ao deletar prontuário", e);
         }
+    }
 
-        public int updateProntuario(String receituario, String exames, String observacao , int whereId) throws SQLException {
+    // Atualizar prontuário
+    public int updateProntuario(String receituario, String exames, String observacao, int whereId) {
+        try {
             createConnection();
             pstupdate.clearParameters();
-            pstupdate.setString(1 , receituario);
-            pstupdate.setString(2 , exames);
-            pstupdate.setString(3 , observacao);
-            pstupdate.setInt(4 , whereId);
+            pstupdate.setString(1, receituario);
+            pstupdate.setString(2, exames);
+            pstupdate.setString(3, observacao);
+            pstupdate.setInt(4, whereId);
             return pstupdate.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Erro ao atualizar prontuário: " + e.getMessage());
+            throw new RuntimeException("Erro ao atualizar prontuário", e);
         }
-        public int cadastrarConvenio(Convenio convenio) throws SQLException {
+    }
+
+    // Cadastrar convênio
+    public int cadastrarConvenio(Convenio convenio) {
+        try {
             createConnection();
             preparedStatementInsertConvenio.clearParameters();
             preparedStatementInsertConvenio.setString(1, convenio.getNome());
             preparedStatementInsertConvenio.setString(2, convenio.getDescricao());
             return preparedStatementInsertConvenio.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Erro ao cadastrar convênio: " + e.getMessage());
+            throw new RuntimeException("Erro ao cadastrar convênio", e);
         }
+    }
 
-        public Convenio getConvenioById(final int id) throws SQLException {
+    // Consultar convênio por ID
+    public Convenio getConvenioById(final int id) {
+        try {
             createConnection();
             preparedStatementGetConvenioById.clearParameters();
             Convenio convenio = new Convenio();
@@ -564,16 +677,27 @@
                 convenio.setDescricao(resultSet.getString("descricao"));
             }
             return convenio;
+        } catch (SQLException e) {
+            System.err.println("Erro ao consultar convênio: " + e.getMessage());
+            throw new RuntimeException("Erro ao consultar convênio", e);
         }
+    }
 
-        public int deleteConvenioById(final int id) throws SQLException {
+    public int deleteConvenioById(final int id) {
+        try {
             createConnection();
             preparedStatementDeleteConvenio.clearParameters();
             preparedStatementDeleteConvenio.setInt(1, id);
             return preparedStatementDeleteConvenio.executeUpdate();
+        } catch (SQLException e) {
+            // Log ou tratar a exceção de forma adequada
+            System.err.println("Erro ao deletar convênio: " + e.getMessage());
+            throw new RuntimeException("Erro ao deletar convênio", e);  // Pode lançar a exceção ou criar uma customizada
         }
+    }
 
-        public List<Convenio> listAllConvenios() throws SQLException {
+    public List<Convenio> listAllConvenios() {
+        try {
             createConnection();
             List<Convenio> convenios = new ArrayList<>();
             ResultSet resultSet = preparedStatementListAllConvenios.executeQuery();
@@ -585,26 +709,44 @@
                 convenios.add(convenio);
             }
             return convenios;
+        } catch (SQLException e) {
+            // Log ou tratar a exceção de forma adequada
+            System.err.println("Erro ao listar convênios: " + e.getMessage());
+            throw new RuntimeException("Erro ao listar convênios", e);
         }
+    }
 
-        public int updateConvenio(String nome, String descricao, final int id) throws SQLException {
+    public int updateConvenio(String nome, String descricao, final int id) {
+        try {
             createConnection();
             preparedStatementUpdateConvenio.clearParameters();
             preparedStatementUpdateConvenio.setString(1, nome);
             preparedStatementUpdateConvenio.setString(2, descricao);
             preparedStatementUpdateConvenio.setInt(3, id);
             return preparedStatementUpdateConvenio.executeUpdate();
+        } catch (SQLException e) {
+            // Log ou tratar a exceção de forma adequada
+            System.err.println("Erro ao atualizar convênio: " + e.getMessage());
+            throw new RuntimeException("Erro ao atualizar convênio", e);
         }
+    }
 
-        public int cadastrarEspecialidade(Especialidade especialidade) throws SQLException {
+    public int cadastrarEspecialidade(Especialidade especialidade) {
+        try {
             createConnection();
             preparedStatementInsertEspecialidade.clearParameters();
             preparedStatementInsertEspecialidade.setString(1, especialidade.getNome());
             preparedStatementInsertEspecialidade.setString(2, especialidade.getDescricao());
             return preparedStatementInsertEspecialidade.executeUpdate();
+        } catch (SQLException e) {
+            // Log ou tratar a exceção de forma adequada
+            System.err.println("Erro ao cadastrar especialidade: " + e.getMessage());
+            throw new RuntimeException("Erro ao cadastrar especialidade", e);
         }
+    }
 
-        public Especialidade getEspecialidadeById(final int id) throws SQLException {
+    public Especialidade getEspecialidadeById(final int id) {
+        try {
             createConnection();
             preparedStatementGetEspecialidadeById.clearParameters();
             Especialidade especialidade = new Especialidade();
@@ -616,16 +758,28 @@
                 especialidade.setDescricao(resultSet.getString("descricao"));
             }
             return especialidade;
+        } catch (SQLException e) {
+            // Log ou tratar a exceção de forma adequada
+            System.err.println("Erro ao obter especialidade: " + e.getMessage());
+            throw new RuntimeException("Erro ao obter especialidade", e);
         }
+    }
 
-        public int deleteEspecialidadeById(final int id) throws SQLException {
+    public int deleteEspecialidadeById(final int id) {
+        try {
             createConnection();
             preparedStatementDeleteEspecialidade.clearParameters();
             preparedStatementDeleteEspecialidade.setInt(1, id);
             return preparedStatementDeleteEspecialidade.executeUpdate();
+        } catch (SQLException e) {
+            // Log ou tratar a exceção de forma adequada
+            System.err.println("Erro ao deletar especialidade: " + e.getMessage());
+            throw new RuntimeException("Erro ao deletar especialidade", e);
         }
+    }
 
-        public List<Especialidade> listAllEspecialidades() throws SQLException {
+    public List<Especialidade> listAllEspecialidades() {
+        try {
             createConnection();
             List<Especialidade> especialidades = new ArrayList<>();
             ResultSet resultSet = preparedStatementListAllEspecialidades.executeQuery();
@@ -637,15 +791,27 @@
                 especialidades.add(especialidade);
             }
             return especialidades;
+        } catch (SQLException e) {
+            // Log ou tratar a exceção de forma adequada
+            System.err.println("Erro ao listar especialidades: " + e.getMessage());
+            throw new RuntimeException("Erro ao listar especialidades", e);
         }
+    }
 
-        public int updateEspecialidade(String nome, String descricao, final int id) throws SQLException {
+    public int updateEspecialidade(String nome, String descricao, final int id) {
+        try {
             createConnection();
             preparedStatementUpdateEspecialidade.clearParameters();
             preparedStatementUpdateEspecialidade.setString(1, nome);
             preparedStatementUpdateEspecialidade.setString(2, descricao);
             preparedStatementUpdateEspecialidade.setInt(3, id);
             return preparedStatementUpdateEspecialidade.executeUpdate();
+        } catch (SQLException e) {
+            // Log ou tratar a exceção de forma adequada
+            System.err.println("Erro ao atualizar especialidade: " + e.getMessage());
+            throw new RuntimeException("Erro ao atualizar especialidade", e);
         }
     }
+}
+
 

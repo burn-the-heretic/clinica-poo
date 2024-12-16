@@ -48,27 +48,43 @@ public class MedicoDAOImpl implements MedicoDAO {
     }
 
     @Override
-    public List<Consulta> listMyConsultas(int medicoId) throws SQLException {
-        createConnection();
-        pstGetConsultasById.clearParameters();
+    public List<Consulta> listMyConsultas(int medicoId) {
+        Connection con = null;
         List<Consulta> localConsulta = new ArrayList<>();
-        pstGetConsultasById.setInt(1 , medicoId);
-        ResultSet resultSet = pstGetConsultasById.executeQuery();
-        while (resultSet.next()) {
-            Consulta consulta = new Consulta();
-            consulta.setId(resultSet.getInt("id"));
-            consulta.setDataHorario(resultSet.getTimestamp("data_horario").toLocalDateTime());
-            consulta.setSintomas(resultSet.getString("sintomas"));
-            consulta.seteRetorno(resultSet.getBoolean("e_retorno"));
-            consulta.setEstaAtiva(resultSet.getBoolean("esta_ativa"));
-            consulta.setConvenio((Convenio) resultSet.getObject("convenio_id"));
-            consulta.setPaciente((Paciente) resultSet.getObject("paciente_id"));
-            consulta.setProntuario((Prontuario) resultSet.getObject("prontuario_id"));
-            consulta.setFuncionario((Funcionario) resultSet.getObject("funcionario_id"));
-            localConsulta.add(consulta);
+        try {
+            con = ConnectionFactory.getConnection(DbConfig.ip, DbConfig.porta,
+                    DbConfig.nomeBanco, DbConfig.usuario, DbConfig.senha);
+            pstGetConsultasById.clearParameters();
+            pstGetConsultasById.setInt(1, medicoId);
+            ResultSet resultSet = pstGetConsultasById.executeQuery();
+            while (resultSet.next()) {
+                Consulta consulta = new Consulta();
+                consulta.setId(resultSet.getInt("id"));
+                consulta.setDataHorario(resultSet.getTimestamp("data_horario").toLocalDateTime());
+                consulta.setSintomas(resultSet.getString("sintomas"));
+                consulta.seteRetorno(resultSet.getBoolean("e_retorno"));
+                consulta.setEstaAtiva(resultSet.getBoolean("esta_ativa"));
+                consulta.setConvenio((Convenio) resultSet.getObject("convenio_id"));
+                consulta.setPaciente((Paciente) resultSet.getObject("paciente_id"));
+                consulta.setProntuario((Prontuario) resultSet.getObject("prontuario_id"));
+                consulta.setFuncionario((Funcionario) resultSet.getObject("funcionario_id"));
+                localConsulta.add(consulta);
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao listar consultas do médico: " + e.getMessage());
+            throw new RuntimeException("Erro ao tentar listar consultas no banco de dados.", e);
+        } finally {
+            try {
+                if (con != null && !con.isClosed()) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                System.err.println("Erro ao fechar a conexão após listar consultas: " + e.getMessage());
+            }
         }
         return localConsulta;
     }
+
 
     @Override
     public int cadastrarPronturario(Prontuario prontuario) throws SQLException {
